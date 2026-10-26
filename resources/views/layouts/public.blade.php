@@ -11,9 +11,12 @@
         *{box-sizing:border-box}
         body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6}
         .wrap{max-width:860px;margin:0 auto;padding:40px 20px}
-        header.site{display:flex;align-items:center;gap:16px;padding:20px 0;border-bottom:1px solid var(--line)}
+        header.site{display:flex;align-items:center;gap:12px 20px;padding:18px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
         .logo{font-weight:800;font-size:20px;letter-spacing:-.02em;text-decoration:none;color:var(--fg)}
         .logo span{color:var(--brand)}
+        .mainnav{display:flex;gap:8px 18px;flex-wrap:wrap;align-items:center}
+        .mainnav a{color:var(--fg);text-decoration:none;font-weight:600;font-size:.95rem}
+        .mainnav a:hover{color:var(--brand)}
         main{padding:32px 0}
         h1{font-size:2rem;line-height:1.2;letter-spacing:-.02em;margin:0 0 .5rem}
         .prose{color:var(--fg)}
@@ -35,7 +38,7 @@
         .code{font-family:ui-monospace,Menlo,monospace;border:1px dashed var(--brand);border-radius:8px;padding:8px 12px;letter-spacing:.08em;background:rgba(245,158,11,.08)}
         .storehead{display:flex;align-items:center;gap:16px;margin-bottom:8px}.storehead img{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#fff;padding:6px}
         .muted-sm{color:var(--muted);font-size:.9rem}
-        .searchform{display:flex;gap:8px;margin-left:auto;max-width:360px;width:100%}
+        .searchform{display:flex;gap:8px;margin-left:auto;max-width:300px;width:100%}
         .searchform input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:10px;padding:9px 12px;font-size:.95rem}
         .searchform input:focus{outline:none;border-color:var(--brand)}
         .searchform.big{max-width:620px;margin:0 auto}
@@ -43,7 +46,7 @@
         .homesearch{margin:26px auto 8px;text-align:center}
         .homesearch .hint{color:var(--muted);font-size:.85rem;margin-top:10px}
         .searchresult:hover{border-color:var(--brand)}
-        @media(max-width:600px){header.site{flex-wrap:wrap}.searchform{margin-left:0;max-width:none}}
+        @media(max-width:780px){.searchform{margin-left:0;max-width:none;order:3}.mainnav{order:2;width:100%}}
     </style>
     <link rel="canonical" href="@yield("canonical", url()->current())">
     <meta property="og:site_name" content="{{ \App\Models\Setting::get("site_name", "Shani CMS") }}">
@@ -73,12 +76,21 @@
     <div class="wrap">
         <header class="site">
             <a href="{{ url("/") }}" class="logo">{!! str_replace(" ", " <span>", e(\App\Models\Setting::get("site_name","Shani CMS"))) !!}@if(str_contains(\App\Models\Setting::get("site_name","Shani CMS")," "))</span>@endif</a>
+            <nav class="mainnav">
+                <a href="{{ url("/store") }}">Stores</a>
+                <a href="{{ url("/categories") }}">Categories</a>
+                <a href="{{ url("/coupons") }}">Coupons</a>
+                <a href="{{ url("/deals") }}">Deals</a>
+                <a href="{{ url("/best") }}">Best</a>
+                <a href="{{ url("/blog") }}">Blog</a>
+            </nav>
             @include("partials.search-form")
         </header>
         <main>@yield("content")</main>
         <footer class="site">
             <p class="footnav">
                 <a href="{{ url("/store") }}">Stores</a> ·
+                <a href="{{ url("/categories") }}">Categories</a> ·
                 <a href="{{ url("/coupons") }}">Coupons</a> ·
                 <a href="{{ url("/deals") }}">Deals</a> ·
                 <a href="{{ url("/best") }}">Best picks</a> ·

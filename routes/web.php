@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OutboundController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
@@ -18,6 +19,8 @@ Route::get('/coupons', [StoreController::class, 'coupons'])->name('coupons.index
 Route::get('/deals', [StoreController::class, 'deals'])->name('deals.index');
 Route::get('/best', [PageController::class, 'best'])->name('roundups.index');
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
+Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/store/{slug}', [StoreController::class, 'show'])->name('store.show');
 
 // Blog
