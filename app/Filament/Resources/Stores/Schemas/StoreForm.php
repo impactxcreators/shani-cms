@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Stores\Schemas;
 use App\Models\Category;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
@@ -24,7 +25,7 @@ class StoreForm
                 TextInput::make('website_url')->url()->label('Website URL'),
                 TextInput::make('affiliate_url')->url()->label('Affiliate link')
                     ->helperText('Your tracked link to this store.'),
-                TextInput::make('logo')->url()->label('Logo image URL')->columnSpanFull(),
+                FileUpload::make('logo')->image()->disk('public')->directory('store-logos')->imageEditor()->maxSize(2048)->label('Logo')->helperText('Upload a logo image (PNG or JPG, up to 2 MB).')->columnSpanFull(),
                 RichEditor::make('description')->columnSpanFull(),
                 Select::make('categories')->relationship('categories', 'name')
                     ->multiple()->preload()->searchable()

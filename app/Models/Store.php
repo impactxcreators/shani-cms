@@ -63,4 +63,16 @@ class Store extends Model
     {
         return 'store/';
     }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        if (blank($this->logo)) {
+            return null;
+        }
+        if (str_starts_with($this->logo, 'http://') || str_starts_with($this->logo, 'https://')) {
+            return $this->logo;
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->logo);
+    }
 }

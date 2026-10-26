@@ -106,6 +106,16 @@
         .smlist li{margin:5px 0;break-inside:avoid}
         .smlist a{color:var(--fg)}.smlist a:hover{color:var(--brand)}
         @media(max-width:620px){.smlist{columns:1}}
+        /* Badge colour variants */
+        .pill.good{color:#10b981;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35)}
+        .pill.hot{color:#fb7185;background:rgba(244,63,94,.14);border-color:rgba(244,63,94,.4)}
+        .pill.save{color:#fff;background:linear-gradient(135deg,var(--brand),var(--brand2));border-color:transparent}
+        .pill.new{color:#38bdf8;background:rgba(56,189,248,.12);border-color:rgba(56,189,248,.35)}
+        .badges{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0}
+        .rating{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:.82rem;color:var(--brand)}
+        .brandlogo{width:44px;height:44px;object-fit:contain;border-radius:11px;background:#fff;padding:5px;flex:none;box-shadow:var(--shadow)}
+        .brandlogo-lg{width:56px;height:56px;object-fit:contain;border-radius:13px;background:#fff;padding:7px;flex:none;box-shadow:var(--shadow)}
+        .logoavatar{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--brand);background:rgba(245,158,11,.12);flex:none}
         @media(max-width:820px){
             .headbar{gap:12px}
             .searchform{order:2;max-width:none;flex:1 1 140px}
