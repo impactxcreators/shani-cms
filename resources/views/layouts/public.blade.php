@@ -78,6 +78,7 @@
         <main>@yield("content")</main>
         <footer class="site">
             <p class="footnav">
+                <a href="{{ url("/store") }}">Stores</a> ·
                 <a href="{{ url("/coupons") }}">Coupons</a> ·
                 <a href="{{ url("/deals") }}">Deals</a> ·
                 <a href="{{ url("/best") }}">Best picks</a> ·

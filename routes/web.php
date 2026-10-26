@@ -17,6 +17,7 @@ Route::get('/ad/{id}', [App\Http\Controllers\AdvertController::class, 'click'])-
 Route::get('/coupons', [StoreController::class, 'coupons'])->name('coupons.index');
 Route::get('/deals', [StoreController::class, 'deals'])->name('deals.index');
 Route::get('/best', [PageController::class, 'best'])->name('roundups.index');
+Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/store/{slug}', [StoreController::class, 'show'])->name('store.show');
 
 // Blog

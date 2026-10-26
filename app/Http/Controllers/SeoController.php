@@ -21,6 +21,7 @@ class SeoController extends Controller
         foreach (ProductList::published()->get(['slug', 'updated_at']) as $l) {
             $urls[] = ['loc' => url('/'.$l->slug), 'lastmod' => $l->updated_at];
         }
+        $urls[] = ['loc' => url('/store'), 'lastmod' => now()];
         foreach (Store::published()->get(['slug', 'updated_at']) as $s) {
             $urls[] = ['loc' => url('/store/'.$s->slug), 'lastmod' => $s->updated_at];
         }
