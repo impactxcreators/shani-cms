@@ -3,10 +3,12 @@
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\OutboundController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::get('/go/{type}/{id}', [OutboundController::class, 'go'])
     ->where('type', 'coupon|deal|store|product')->where('id', '[0-9]+')->name('go');
@@ -29,6 +31,7 @@ Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])
 // SEO endpoints
 Route::get('/sitemap.xml', [App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('/sitemap/html', [App\Http\Controllers\SeoController::class, 'sitemapHtml'])->name('sitemap.html');
+Route::get('/sitemap', [App\Http\Controllers\SeoController::class, 'sitemapHtml'])->name('sitemap.page');
 Route::get('/robots.txt', [App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/rss.xml', [App\Http\Controllers\SeoController::class, 'rss'])->name('rss');
 
