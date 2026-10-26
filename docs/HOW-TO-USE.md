@@ -57,3 +57,10 @@ Enter the old path (e.g. `/old-page`) and where it should go. Use **301** for a 
 - **Handpicks** — small curated promo cards (used on the homepage later).
 - **Comments** — visitor comments arrive as *Pending* (the menu shows a count). Click the green tick
   to approve, or the ✋ to mark spam. Only approved comments appear on the site.
+
+## New in Phase 5  (menu: Content)
+- **Home Banners** — big image banners for the top of the homepage. Drag to reorder.
+- **Home Blocks** — build your homepage from sections: latest coupons, featured stores, blog feed,
+  categories, handpicks, or custom text. Drag to reorder; toggle Active to show/hide.
+- **Adverts** — ad slots with click counting.
+If you create no blocks, the homepage shows a sensible default.

@@ -124,3 +124,21 @@ one-line `@if@section@endif` Blade pattern miscompiled — switched to the safe 
 (also hardened the roundup view).
 
 **Left:** Phase 5 — Homepage builder (banners, drag-reorder home blocks, adverts).
+
+## Phase 5 — Homepage builder  ✅  (2026-10-26)
+
+**Built**
+- Tables/models: home_banners, home_blocks (typed + JSON config), adverts (impressions/clicks)
+- Admin (Content menu): Home Banners, Home Blocks, Adverts — all drag-to-reorder
+- Homepage assembled from active home_blocks in order; block types: hero (banners), coupon_grid,
+  featured_logos, blog_feed, trending (categories), handpicked, rich_text
+- Graceful default homepage when no blocks are configured
+- Advert click tracking at /ad/{id} (increments clicks, 302 redirect)
+
+**Verified**
+- 27 automated tests pass (home admin screens, homepage renders blocks, inactive block hidden,
+  default homepage fallback, advert click tracking)
+- Live home 503 / admin 200, log clean
+- Sample: a hero banner, 3 home blocks, a top advert
+
+**Left:** Phase 6 — SEO layer (sitemap.xml, robots.txt, rss.xml, JSON-LD, meta tags, canonical).

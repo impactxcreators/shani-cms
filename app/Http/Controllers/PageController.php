@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HomeBanner;
+use App\Models\HomeBlock;
 use App\Models\Page;
 use App\Models\ProductList;
 
@@ -9,7 +11,10 @@ class PageController extends Controller
 {
     public function home()
     {
-        return view('home');
+        $blocks = HomeBlock::active()->orderBy('sort_order')->get();
+        $banners = HomeBanner::active()->orderBy('sort_order')->get();
+
+        return view('home', compact('blocks', 'banners'));
     }
 
     public function best()
@@ -18,9 +23,6 @@ class PageController extends Controller
         return view('roundups.index', compact('lists'));
     }
 
-    /**
-     * Catch-all: resolve a published roundup first, then a page.
-     */
     public function resolve(string $slug)
     {
         if ($list = ProductList::published()->where('slug', $slug)->first()) {

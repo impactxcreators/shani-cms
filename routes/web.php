@@ -10,6 +10,7 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/go/{type}/{id}', [OutboundController::class, 'go'])
     ->where('type', 'coupon|deal|store|product')->where('id', '[0-9]+')->name('go');
+Route::get('/ad/{id}', [App\Http\Controllers\AdvertController::class, 'click'])->where('id', '[0-9]+')->name('ad.click');
 
 Route::get('/coupons', [StoreController::class, 'coupons'])->name('coupons.index');
 Route::get('/deals', [StoreController::class, 'deals'])->name('deals.index');
