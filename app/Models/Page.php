@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use App\Models\Concerns\HasSlugRedirect;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Page extends Model
 {
-    use SoftDeletes, HasSlug, HasSlugRedirect;
+    use SoftDeletes, HasSlug, HasSlugRedirect, Auditable;
 
     protected $guarded = [];
 

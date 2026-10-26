@@ -80,3 +80,11 @@ If you create no blocks, the homepage shows a sensible default.
   (Save your spreadsheet as CSV. Tip: put multiple highlights in one cell separated by | )
 - **Dashboard:** now shows click totals (7/30 days), a 14-day clicks chart, coupons expiring soon,
   a warning if expired coupons are still live, and pending comments.
+
+## New in Phase 8  (menu: Settings)
+- **Users & Roles** — add team members and give them a role: Admin (everything), Editor (publish
+  anything), Author (write own drafts), Viewer (read-only). Toggle *Active* to allow/block login.
+- **Activity Log** — a history of who changed what (stores, coupons, posts, etc.).
+- **Automatic upkeep:** expired coupons auto-archive, old click data is trimmed after 90 days, and
+  the database is backed up daily (kept in storage/app/backups). These run via the cron job your
+  developer/you set up once in hPanel (see DEPLOY.md).

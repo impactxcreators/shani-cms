@@ -186,3 +186,31 @@ broken-link checker.
 
 **Left:** Phase 8 — Roles & permissions, activity log, scheduled publishing, backups, rate limits,
 click pruning.
+
+## Phase 8 — Roles, activity log, scheduling, backups  ✅  (2026-10-26)
+
+**Built**
+- Roles & permissions (spatie/laravel-permission): Admin, Editor, Author, Viewer seeded; the owner
+  account is Admin. Users have is_active / avatar / last_login_at.
+- Panel access gated by is_active (inactive users get 403). **Users & Roles** admin screen (assign
+  roles, activate/deactivate, set passwords).
+- Activity log (spatie/laravel-activitylog) on Stores, Coupons, Deals, Posts, Pages, Roundups,
+  Products — a read-only **Activity Log** screen shows who changed what and when.
+- Scheduled commands (one cron drives them): `coupons:archive-expired` (daily), `clicks:prune`
+  (90-day retention, daily), `db:backup` (daily).
+- **Pure-PHP database backup** (`db:backup`) — Hostinger disables mysqldump/proc_open, so this dumps
+  the DB via PHP to a gzipped .sql in storage/app/backups and keeps the latest 14.
+- Scheduled publishing already works via the published-at scopes (future-dated items stay hidden
+  until their time).
+- Comment rate limiting + honeypot (from Phase 4).
+
+**Verified**
+- 46 tests (45 pass, 1 skipped = MySQL-only backup, verified live). Activity logging, role assignment,
+  inactive-user 403, coupon archiving, click pruning all covered.
+- db:backup verified on the live MySQL database (wrote a gzipped dump).
+
+**Action needed from owner (one-time):** add the cron job in hPanel (see DEPLOY.md / HOW-TO-USE) so
+the scheduled tasks run. Automated DB backup is pure-PHP; Hostinger's own backups are a good second layer.
+
+**Deferred** (docs/BACKLOG.md): per-record revision history UI (activity log covers the audit trail),
+plus earlier SEO/commerce extras.

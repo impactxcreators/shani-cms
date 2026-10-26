@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use App\Models\Concerns\HasSlugRedirect;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -12,7 +13,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class ProductList extends Model
 {
-    use SoftDeletes, HasSlug, HasSlugRedirect;
+    use SoftDeletes, HasSlug, HasSlugRedirect, Auditable;
 
     protected $guarded = [];
 

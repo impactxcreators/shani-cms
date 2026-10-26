@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Auditable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Product extends Model
 {
-    use SoftDeletes, HasSlug;
+    use SoftDeletes, HasSlug, Auditable;
 
     protected $guarded = [];
 
