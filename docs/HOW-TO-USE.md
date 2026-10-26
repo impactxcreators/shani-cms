@@ -73,3 +73,10 @@ If you create no blocks, the homepage shows a sensible default.
   broken links.
 - While "coming soon" is on, robots.txt tells search engines to stay away; flip maintenance off to
   open up.
+
+## New in Phase 7
+- **Import products from a spreadsheet:** Products → **Import CSV**. Upload a CSV, match the columns,
+  and it imports with validation. Any bad rows come back as a downloadable file to fix.
+  (Save your spreadsheet as CSV. Tip: put multiple highlights in one cell separated by | )
+- **Dashboard:** now shows click totals (7/30 days), a 14-day clicks chart, coupons expiring soon,
+  a warning if expired coupons are still live, and pending comments.

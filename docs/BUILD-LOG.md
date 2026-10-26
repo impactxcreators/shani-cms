@@ -163,3 +163,26 @@ one-line `@if@section@endif` Blade pattern miscompiled — switched to the safe 
 - Live sitemap.xml / robots.txt / rss.xml return 200; log clean
 
 **Left:** Phase 7 — CSV/Excel imports + click analytics dashboard widgets.
+
+## Phase 7 — Imports & analytics  ✅  (2026-10-26)
+
+**Built**
+- CSV import for Products via Filament importer: column mapping, per-row validation, upsert on
+  external_id/slug, pipe-separated highlights, auto defaults, downloadable failed-rows report.
+  "Import CSV" button on the Products list.
+- Import tables (imports, exports, failed_import_rows); QUEUE_CONNECTION=sync so imports process
+  immediately on shared hosting.
+- Dashboard analytics widgets: stats overview (clicks 7/30d, published coupons, coupons expiring in
+  7d, expired-but-live warning, pending comments, published posts, active stores) + a 14-day clicks
+  line chart.
+
+**Verified**
+- 39 automated tests pass (dashboard + products page load, chart returns 14 days, importer creates a
+  product row, importer upserts on slug)
+- Live admin dashboard 200; log clean
+
+**Deferred** (docs/BACKLOG.md): Excel .xlsx import (CSV works now), Amazon PA-API sync,
+broken-link checker.
+
+**Left:** Phase 8 — Roles & permissions, activity log, scheduled publishing, backups, rate limits,
+click pruning.
