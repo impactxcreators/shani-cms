@@ -87,6 +87,25 @@
         .footnav a:hover{color:var(--brand)}
         .site-footer .copy{color:var(--muted);font-size:.86rem;margin:0}
 
+        /* Explore link chips */
+        .linkgrid{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
+        .linkchip{font-size:.86rem;font-weight:600;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 13px;transition:.15s}
+        .linkchip:hover{border-color:var(--brand);color:var(--brand);transform:translateY(-1px)}
+        .explore-note{color:var(--muted);font-size:.8rem;margin-top:12px}
+        /* Sitemap accordion */
+        .smnode{border:1px solid var(--line);border-radius:12px;margin:8px 0;background:var(--card)}
+        .smnode>summary{cursor:pointer;padding:12px 16px;font-weight:700;list-style:none;display:flex;align-items:center;gap:10px}
+        .smnode>summary::-webkit-details-marker{display:none}
+        .smnode>summary::before{content:">";color:var(--brand);font-weight:800;transition:transform .15s;display:inline-block}
+        .smnode[open]>summary::before{transform:rotate(90deg)}
+        .smnode>summary:hover{color:var(--brand)}
+        .smcount{margin-left:auto;font-size:.72rem;font-weight:700;color:var(--brand);background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:999px;padding:2px 10px}
+        .smbody{padding:4px 16px 14px 32px;border-top:1px solid var(--line)}
+        .smview{margin:10px 0 2px;font-size:.9rem}
+        .smlist{list-style:none;padding:0;margin:8px 0;columns:2;column-gap:28px}
+        .smlist li{margin:5px 0;break-inside:avoid}
+        .smlist a{color:var(--fg)}.smlist a:hover{color:var(--brand)}
+        @media(max-width:620px){.smlist{columns:1}}
         @media(max-width:820px){
             .headbar{gap:12px}
             .searchform{order:2;max-width:none;flex:1 1 140px}

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogCategory;
+use App\Models\Category;
 use App\Models\Page;
+use App\Models\ProductCategory;
 use App\Models\Post;
 use App\Models\ProductList;
 use App\Models\Setting;
@@ -52,7 +55,42 @@ class SeoController extends Controller
 
     public function sitemapHtml()
     {
-        return view('seo.sitemap', ['urls' => $this->urls()]);
+        $storeCats = Category::with(['stores' => fn ($q) => $q->published()])->get();
+        $storeTree = $this->categoryTree(
+            $storeCats,
+            fn ($c) => route('category.show', $c->slug),
+            fn ($c) => $c->stores->map(fn ($s) => ['label' => $s->name, 'url' => route('store.show', $s->slug)])->values()->all()
+        );
+
+        $roundupsByCat = ProductList::published()->get(['slug', 'title', 'h1', 'product_category_id'])->groupBy('product_category_id');
+        $productTree = $this->categoryTree(
+            ProductCategory::all(),
+            fn ($c) => null,
+            fn ($c) => collect($roundupsByCat->get($c->id, collect()))
+                ->map(fn ($r) => ['label' => ($r->h1 ?: $r->title), 'url' => url('/'.$r->slug)])->values()->all()
+        );
+
+        $blogTree = BlogCategory::with(['posts' => fn ($q) => $q->published()])->get()->map(fn ($c) => [
+            'name' => $c->name,
+            'url' => route('blog.category', $c->slug),
+            'pages' => $c->posts->map(fn ($p) => ['label' => $p->title, 'url' => route('blog.show', $p->slug)])->values()->all(),
+            'children' => [],
+        ])->values()->all();
+
+        $pages = Page::published()->get(['slug', 'title'])
+            ->map(fn ($p) => ['label' => $p->title, 'url' => url('/'.$p->slug)])->values()->all();
+
+        return view('seo.sitemap', compact('storeTree', 'productTree', 'blogTree', 'pages'));
+    }
+
+    private function categoryTree($all, callable $urlFn, callable $pagesFn, $parentId = null): array
+    {
+        return $all->where('parent_id', $parentId)->map(fn ($c) => [
+            'name' => $c->name,
+            'url' => $urlFn($c),
+            'pages' => $pagesFn($c),
+            'children' => $this->categoryTree($all, $urlFn, $pagesFn, $c->id),
+        ])->values()->all();
     }
 
     public function robots()

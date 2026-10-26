@@ -19,4 +19,14 @@
                <a class="btn alt" href="{{ url("/best") }}">Best picks</a></p>
         @endif
     @endforelse
+
+    @if(!empty($exploreLinks))
+        <h2>Explore</h2>
+        <div class="linkgrid">
+            @foreach($exploreLinks as $l)
+                <a class="linkchip" href="{{ $l["url"] }}">{{ $l["label"] }}</a>
+            @endforeach
+        </div>
+        <p class="explore-note">Showing {{ count($exploreLinks) }} of {{ number_format($exploreTotal) }} pages — this selection refreshes about every {{ $exploreMinutes }} min so everything gets a turn.</p>
+    @endif
 @endsection
