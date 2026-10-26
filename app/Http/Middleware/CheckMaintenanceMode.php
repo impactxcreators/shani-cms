@@ -22,7 +22,8 @@ class CheckMaintenanceMode
         if ($path === $adminPath || str_starts_with($path, $adminPath . '/')
             || str_starts_with($path, 'livewire')
             || str_starts_with($path, 'css') || str_starts_with($path, 'js')
-            || str_starts_with($path, 'storage') || str_starts_with($path, 'build')) {
+            || str_starts_with($path, 'storage') || str_starts_with($path, 'build')
+            || in_array($path, ['robots.txt', 'sitemap.xml', 'rss.xml', 'sitemap/html'])) {
             return $next($request);
         }
 

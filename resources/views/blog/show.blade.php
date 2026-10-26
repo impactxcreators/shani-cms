@@ -6,6 +6,22 @@
     @section('meta_description', $post->meta_description)
 @endif
 
+
+@if($post->no_index)
+    @section('robots', 'noindex')
+@endif
+
+@push('jsonld')
+<script type="application/ld+json">{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'Article',
+    'headline' => $post->title,
+    'datePublished' => optional($post->published_at)->toAtomString(),
+    'author' => $post->author ? ['@type' => 'Person', 'name' => $post->author->name] : null,
+    'image' => $post->cover_image,
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+@endpush
+
 @section('content')
     @if($post->cover_image)
         <img src="{{ $post->cover_image }}" alt="" style="width:100%;border-radius:14px;margin-bottom:16px">

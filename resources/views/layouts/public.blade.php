@@ -33,6 +33,24 @@
 .storehead{display:flex;align-items:center;gap:16px;margin-bottom:8px}.storehead img{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#fff;padding:6px}
 .muted-sm{color:var(--muted);font-size:.9rem}
     </style>
+    <link rel="canonical" href="@yield('canonical', url()->current())">
+    <meta property="og:site_name" content="{{ \App\Models\Setting::get('site_name', 'Shani CMS') }}">
+    <meta property="og:title" content="@yield('title', \App\Models\Setting::get('site_name', 'Shani CMS'))">
+    <meta property="og:description" content="@yield('meta_description', \App\Models\Setting::get('site_description', ''))">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    @hasSection('og_image')<meta property="og:image" content="@yield('og_image')">@endif
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">{!! json_encode([
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            ['@type' => 'Organization', 'name' => \App\Models\Setting::get('site_name', 'Shani CMS'), 'url' => url('/')],
+            ['@type' => 'WebSite', 'name' => \App\Models\Setting::get('site_name', 'Shani CMS'), 'url' => url('/'),
+             'potentialAction' => ['@type' => 'SearchAction', 'target' => url('/').'/search?q={search_term_string}', 'query-input' => 'required name=search_term_string']],
+        ],
+    ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+    @hasSection('robots')<meta name="robots" content="@yield('robots')">@endif
+    @stack('jsonld')
 </head>
 <body>
     <div class="wrap">

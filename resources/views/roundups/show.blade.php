@@ -5,6 +5,35 @@
     @section('meta_description', $list->meta_description)
 @endif
 
+
+@if($list->no_index)
+    @section('robots', 'noindex')
+@endif
+
+@push('jsonld')
+<script type="application/ld+json">{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'ItemList',
+    'name' => $list->title,
+    'itemListElement' => $list->items->map(fn($it, $i) => [
+        '@type' => 'ListItem',
+        'position' => $i + 1,
+        'name' => $it->custom_title ?: optional($it->product)->title,
+    ])->values()->all(),
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+@if(!empty($list->faq_items))
+<script type="application/ld+json">{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => collect($list->faq_items)->map(fn($f) => [
+        '@type' => 'Question',
+        'name' => $f['question'] ?? '',
+        'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f['answer'] ?? ''],
+    ])->all(),
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE) !!}</script>
+@endif
+@endpush
+
 @section('content')
     @if($list->banner)<img src="{{ $list->banner }}" alt="" style="width:100%;border-radius:14px;margin-bottom:16px">@endif
     <h1>{{ $list->h1 ?: $list->title }}</h1>

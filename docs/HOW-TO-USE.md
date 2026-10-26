@@ -64,3 +64,12 @@ Enter the old path (e.g. `/old-page`) and where it should go. Use **301** for a 
   categories, handpicks, or custom text. Drag to reorder; toggle Active to show/hide.
 - **Adverts** — ad slots with click counting.
 If you create no blocks, the homepage shows a sensible default.
+
+## New in Phase 6  (automatic SEO)
+- Your site now has `/sitemap.xml`, `/robots.txt` and `/rss.xml` automatically.
+- Each page tells Google its title, description and rich "structured data" (so roundups can show
+  star ratings / lists, posts show as articles).
+- If you change a page's web address (slug), the old address auto-forwards to the new one — no
+  broken links.
+- While "coming soon" is on, robots.txt tells search engines to stay away; flip maintenance off to
+  open up.

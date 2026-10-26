@@ -25,6 +25,13 @@ Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])
     ->middleware('throttle:6,1')->name('blog.comment');
 
+
+// SEO endpoints
+Route::get('/sitemap.xml', [App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
+Route::get('/sitemap/html', [App\Http\Controllers\SeoController::class, 'sitemapHtml'])->name('sitemap.html');
+Route::get('/robots.txt', [App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
+Route::get('/rss.xml', [App\Http\Controllers\SeoController::class, 'rss'])->name('rss');
+
 // Catch-all: resolves a roundup list, then a page. Must stay last.
 Route::get('/{slug}', [PageController::class, 'resolve'])
     ->where('slug', '^(?!'.preg_quote(config('cms.filament_path', 'admin'), '/').'|livewire|storage|build|css|js).*$')

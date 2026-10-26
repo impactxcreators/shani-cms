@@ -142,3 +142,24 @@ one-line `@if@section@endif` Blade pattern miscompiled — switched to the safe 
 - Sample: a hero banner, 3 home blocks, a top advert
 
 **Left:** Phase 6 — SEO layer (sitemap.xml, robots.txt, rss.xml, JSON-LD, meta tags, canonical).
+
+## Phase 6 — SEO layer  ✅  (2026-10-26)
+
+**Built**
+- `/sitemap.xml` (generated from published pages, roundups, stores, posts with lastmod)
+- `/sitemap/html` human-readable sitemap, `/robots.txt` (Disallow all during coming-soon;
+  Allow + Sitemap line when live), `/rss.xml` (latest posts)
+- Site-wide JSON-LD: Organization + WebSite (with SearchAction)
+- Per-page JSON-LD: ItemList + FAQPage on roundups, Article on posts
+- Canonical tag, OpenGraph + Twitter card meta, per-page noindex support
+- **Auto-301**: changing a Page/Store/Post/Roundup slug auto-creates a 301 from the old URL
+- SEO endpoints respond even during coming-soon
+- Deferred extras recorded in docs/BACKLOG.md (OG image generation, internal-link suggester,
+  broken-link checker, sitemap index split)
+
+**Verified**
+- 35 automated tests pass (sitemap lists content, robots both states, rss, Organization & ItemList
+  JSON-LD, slug-change 301 for page and prefixed store)
+- Live sitemap.xml / robots.txt / rss.xml return 200; log clean
+
+**Left:** Phase 7 — CSV/Excel imports + click analytics dashboard widgets.

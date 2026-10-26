@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSlugRedirect;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,7 +12,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Store extends Model
 {
-    use SoftDeletes, HasSlug;
+    use SoftDeletes, HasSlug, HasSlugRedirect;
 
     protected $guarded = [];
 
@@ -55,5 +56,10 @@ class Store extends Model
             'coupons_count' => $this->coupons()->active()->count(),
             'deals_count' => $this->deals()->active()->count(),
         ])->saveQuietly();
+    }
+
+    public function slugRoutePrefix(): string
+    {
+        return 'store/';
     }
 }
