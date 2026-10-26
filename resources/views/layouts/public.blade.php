@@ -21,6 +21,17 @@
         .muted{color:var(--muted)}
         footer.site{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:.9rem}
         a{color:var(--brand)}
+.grid{display:grid;gap:16px}.grid.cols2{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card h3{margin:.2rem 0 .4rem;font-size:1.05rem}
+.btn{display:inline-block;background:var(--brand);color:#111;font-weight:700;text-decoration:none;padding:10px 16px;border-radius:10px;border:none;cursor:pointer;font-size:.95rem}
+.btn.alt{background:transparent;color:var(--brand);border:1px solid var(--brand)}
+.pill{display:inline-block;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brand);border:1px solid rgba(245,158,11,.4);padding:3px 9px;border-radius:999px}
+.price{font-weight:800;font-size:1.2rem}.was{color:var(--muted);text-decoration:line-through;margin-left:6px}
+.codebox{display:flex;gap:8px;align-items:center;margin-top:10px}
+.code{font-family:ui-monospace,Menlo,monospace;border:1px dashed var(--brand);border-radius:8px;padding:8px 12px;letter-spacing:.08em;background:rgba(245,158,11,.08)}
+.storehead{display:flex;align-items:center;gap:16px;margin-bottom:8px}.storehead img{width:64px;height:64px;object-fit:contain;border-radius:12px;background:#fff;padding:6px}
+.muted-sm{color:var(--muted);font-size:.9rem}
     </style>
 </head>
 <body>

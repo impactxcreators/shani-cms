@@ -33,3 +33,12 @@ Create normal website pages (About, Contact, Privacy, etc.).
 ### Redirects  (menu: Tools → Redirects)
 If a page moves, send its old address to a new one so visitors and Google do not hit a dead end.
 Enter the old path (e.g. `/old-page`) and where it should go. Use **301** for a permanent move.
+
+## New in Phase 2  (menu: Stores)
+- **All Stores** — add a brand (e.g. Nike): name, website, your affiliate link, logo URL, categories.
+- **Categories** — group stores (e.g. Fashion, Electronics). Can be nested.
+- **Coupons** — pick the store, add a title and (optionally) a code, set a type and expiry.
+  Expired coupons disappear from the site automatically.
+- **Deals** — product price drops: original price, sale price, image, link.
+- Every outgoing link goes through a tracked `/go/...` link so you can see what gets clicked.
+- See a store live at `https://gipsypockets.store/store/<slug>` (once "coming soon" is off).

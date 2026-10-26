@@ -52,3 +52,27 @@ sqlite :memory: — they can never touch the live MySQL. Always `php artisan con
 testing and `php artisan optimize` after.
 
 **Left for next time:** Phase 2 — Stores, Categories, Coupons, Deals + outbound /go/ click tracking.
+
+## Phase 2 — Stores, Categories, Coupons, Deals  ✅  (2026-10-26)
+
+**Built**
+- Tables: categories (nested via parent_id), stores (+ category_store pivot), coupons, deals, click_events
+- Models with relationships + `active()` scopes (hide expired/not-yet-started automatically)
+- Admin resources (all in the **Stores** menu group): All Stores, Categories, Coupons, Deals — with
+  searchable store pickers, discount-type logic, verified/exclusive flags, soft deletes, status filters
+- Public pages: `/store/{slug}` (coupons + deals), `/coupons`, `/deals` with styled cards
+- **Coupon reveal**: "Show code" reveals the code and opens the retailer via the tracked link
+- **Affiliate click tracking**: `/go/{coupon|deal|store}/{id}` logs a click_event (IP hashed),
+  increments coupon used_count, falls back to the store's affiliate/website URL, then 302s with
+  rel="sponsored nofollow"
+
+**Verified**
+- 11 automated tests pass (admin screens, store page hides expired coupons, /go logs + redirects +
+  increments, affiliate fallback, listings render)
+- End-to-end: /go 302 → Nike affiliate URL, click logged
+- Sample data: Nike store, 2 coupons (incl. SPRING20), 1 deal, Fashion category
+
+**Note:** while "coming soon" is ON, the public commerce pages and /go are hidden from guests
+(admins bypass). They go live the moment you turn maintenance off.
+
+**Left:** Phase 3 — Products & roundup "Best X" list builder.
