@@ -76,3 +76,26 @@ testing and `php artisan optimize` after.
 (admins bypass). They go live the moment you turn maintenance off.
 
 **Left:** Phase 3 — Products & roundup "Best X" list builder.
+
+## Phase 3 — Products & Roundup ("Best X") lists  ✅  (2026-10-26)
+
+**Built**
+- Tables/models: product_categories (nested), products (highlights JSON, rating, price, affiliate),
+  product_lists (roundup), product_list_items (rank, badge, custom title/blurb, editor note)
+- Admin (Products menu): Products, Product Categories, and a **Roundup Lists** builder with a
+  drag-to-reorder product repeater, per-item badges/blurbs, an FAQ builder, related-roundup picker,
+  intro/outro rich text, SEO
+- Public: `/best` index; roundup pages resolve at `/{slug}` (e.g. /best-laptops) with hero, H1,
+  "Updated" label, jump-to index, ranked cards (rank #, badge, rating, highlights behind "Show more"),
+  product "Check price" tracked via `/go/product/{id}`, FAQ accordion, related roundups, disclosure
+- Added `product` type to the `/go` click tracker
+
+**Verified**
+- 16 automated tests pass (admin screens, roundup renders ranked items, draft hidden 404,
+  /best index, product click tracking)
+- All public pages return 200; log clean
+- Fixed a stale route-cache bug and a catch-all regex that wrongly blocked slugs starting with a
+  reserved word (e.g. "best-laptops")
+- Sample data: Laptops category, 2 products, "Best Laptops for 2026" roundup
+
+**Left:** Phase 4 — Blog (posts, categories, authors, comments moderation) + handpicks.

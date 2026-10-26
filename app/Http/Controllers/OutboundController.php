@@ -44,6 +44,10 @@ class OutboundController extends Controller
                 $d = Deal::with('store')->find($id);
                 return [$d, $d?->destination_url ?: $d?->store?->affiliate_url ?: $d?->store?->website_url];
             })(),
+            'product' => (function () use ($id) {
+                $p = \App\Models\Product::find($id);
+                return [$p, $p?->affiliate_url];
+            })(),
             'store' => (function () use ($id) {
                 $s = Store::find($id);
                 return [$s, $s?->affiliate_url ?: $s?->website_url];

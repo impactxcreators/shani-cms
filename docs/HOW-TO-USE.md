@@ -42,3 +42,10 @@ Enter the old path (e.g. `/old-page`) and where it should go. Use **301** for a 
 - **Deals** — product price drops: original price, sale price, image, link.
 - Every outgoing link goes through a tracked `/go/...` link so you can see what gets clicked.
 - See a store live at `https://gipsypockets.store/store/<slug>` (once "coming soon" is off).
+
+## New in Phase 3  (menu: Products)
+- **Products** — add items you recommend: title, brand, image, price, rating, highlights, affiliate link.
+- **Product Categories** — group products (Laptops, Phones…).
+- **Roundup Lists** — build a "Best X for 2026" page: add products, drag to reorder, give each a
+  badge (Best Overall, Best Budget), write a blurb, add FAQs. Set status to Published and it appears
+  at `https://gipsypockets.store/<slug>`, listed on `/best`.
