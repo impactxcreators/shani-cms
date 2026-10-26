@@ -49,3 +49,11 @@ Enter the old path (e.g. `/old-page`) and where it should go. Use **301** for a 
 - **Roundup Lists** — build a "Best X for 2026" page: add products, drag to reorder, give each a
   badge (Best Overall, Best Budget), write a blurb, add FAQs. Set status to Published and it appears
   at `https://gipsypockets.store/<slug>`, listed on `/best`.
+
+## New in Phase 4  (menu: Editorial)
+- **Blog Posts** — write articles with a rich editor, author, categories, tags. Publish to show at
+  `/blog/<slug>`, listed on `/blog`.
+- **Authors** / **Blog Categories** — organise posts.
+- **Handpicks** — small curated promo cards (used on the homepage later).
+- **Comments** — visitor comments arrive as *Pending* (the menu shows a count). Click the green tick
+  to approve, or the ✋ to mark spam. Only approved comments appear on the site.

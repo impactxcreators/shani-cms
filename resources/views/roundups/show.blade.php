@@ -1,6 +1,10 @@
 @extends('layouts.public')
 @section('title', $list->meta_title ?: $list->title)
-@if($list->meta_description)@section('meta_description', $list->meta_description)@endif
+
+@if($list->meta_description)
+    @section('meta_description', $list->meta_description)
+@endif
+
 @section('content')
     @if($list->banner)<img src="{{ $list->banner }}" alt="" style="width:100%;border-radius:14px;margin-bottom:16px">@endif
     <h1>{{ $list->h1 ?: $list->title }}</h1>

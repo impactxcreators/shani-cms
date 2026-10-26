@@ -99,3 +99,28 @@ testing and `php artisan optimize` after.
 - Sample data: Laptops category, 2 products, "Best Laptops for 2026" roundup
 
 **Left:** Phase 4 — Blog (posts, categories, authors, comments moderation) + handpicks.
+
+## Phase 4 — Blog & Handpicks  ✅  (2026-10-26)
+
+**Built**
+- Tables/models: authors, blog_categories, posts (+ blog_category_post pivot), comments
+  (polymorphic, threaded, moderation statuses), handpicks
+- Admin (Editorial menu): Blog Posts (rich text, author, categories, tags, SEO, scheduling),
+  Blog Categories, Authors, Handpicks, and a **Comments moderation** screen with a pending-count
+  badge, one-click Approve / Mark spam, bulk approve, and a default "pending" filter
+- Public: /blog, /blog/{slug} (post + approved comments + comment form), /blog/category/{slug},
+  /blog/author/{slug}
+- Comment submission: stored as **pending** (never shown until approved), spam **honeypot**,
+  **rate limited** (6/min), hashed IP
+
+**Verified**
+- 22 automated tests pass (editorial screens, blog renders, draft hidden, only approved comments
+  show, visitor comment saved as pending, honeypot blocks spam)
+- Live home 503 / admin 200, log clean
+- Sample: author "Shani", "Guides" category, a published post, a handpick
+
+**Fixes:** a test helper named post() clashed with Laravel's HTTP helper (fatal) — renamed; and a
+one-line `@if@section@endif` Blade pattern miscompiled — switched to the safe multi-line form
+(also hardened the roundup view).
+
+**Left:** Phase 5 — Homepage builder (banners, drag-reorder home blocks, adverts).

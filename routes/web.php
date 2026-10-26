@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\OutboundController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\StoreController;
@@ -14,6 +15,14 @@ Route::get('/coupons', [StoreController::class, 'coupons'])->name('coupons.index
 Route::get('/deals', [StoreController::class, 'deals'])->name('deals.index');
 Route::get('/best', [PageController::class, 'best'])->name('roundups.index');
 Route::get('/store/{slug}', [StoreController::class, 'show'])->name('store.show');
+
+// Blog
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/category/{slug}', [BlogController::class, 'category'])->name('blog.category');
+Route::get('/blog/author/{slug}', [BlogController::class, 'author'])->name('blog.author');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
+Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])
+    ->middleware('throttle:6,1')->name('blog.comment');
 
 // Catch-all: resolves a roundup list, then a page. Must stay last.
 Route::get('/{slug}', [PageController::class, 'resolve'])
