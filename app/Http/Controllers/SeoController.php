@@ -5,70 +5,129 @@ namespace App\Http\Controllers;
 use App\Models\BlogCategory;
 use App\Models\Category;
 use App\Models\Page;
-use App\Models\ProductCategory;
 use App\Models\Post;
 use App\Models\ProductList;
 use App\Models\Setting;
 use App\Models\Store;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
 
 class SeoController extends Controller
 {
-    private function urls(): array
+    /** Max URLs per child sitemap (Google allows 50,000). */
+    private const PER_SITEMAP = 50000;
+
+    /** Child sitemap types, in index order. Only types with real public pages. */
+    private function sitemapTypes(): array
     {
-        $urls = [['loc' => url('/'), 'lastmod' => now()]];
-
-        foreach (Page::published()->get(['slug', 'updated_at']) as $p) {
-            $urls[] = ['loc' => url('/'.$p->slug), 'lastmod' => $p->updated_at];
-        }
-        foreach (ProductList::published()->get(['slug', 'updated_at']) as $l) {
-            $urls[] = ['loc' => url('/'.$l->slug), 'lastmod' => $l->updated_at];
-        }
-        $urls[] = ['loc' => url('/store'), 'lastmod' => now()];
-        $urls[] = ['loc' => url('/categories'), 'lastmod' => now()];
-        foreach (\App\Models\Category::all(['slug', 'updated_at']) as $c) {
-            $urls[] = ['loc' => url('/category/'.$c->slug), 'lastmod' => $c->updated_at];
-        }
-        foreach (Store::published()->get(['slug', 'updated_at']) as $s) {
-            $urls[] = ['loc' => url('/store/'.$s->slug), 'lastmod' => $s->updated_at];
-        }
-        foreach (Post::published()->get(['slug', 'updated_at']) as $post) {
-            $urls[] = ['loc' => url('/blog/'.$post->slug), 'lastmod' => $post->updated_at];
-        }
-
-        return $urls;
+        return ['main', 'pages', 'stores', 'store-categories', 'roundups', 'blog', 'blog-categories'];
     }
 
+    private function urlsForType(string $type): Collection
+    {
+        return match ($type) {
+            'main' => collect([
+                ['loc' => url('/'), 'lastmod' => now()],
+                ['loc' => url('/store'), 'lastmod' => now()],
+                ['loc' => url('/categories'), 'lastmod' => now()],
+                ['loc' => url('/coupons'), 'lastmod' => now()],
+                ['loc' => url('/deals'), 'lastmod' => now()],
+                ['loc' => url('/best'), 'lastmod' => now()],
+                ['loc' => url('/blog'), 'lastmod' => now()],
+            ]),
+            'pages' => Page::published()->get(['slug', 'updated_at'])
+                ->map(fn ($p) => ['loc' => url('/'.$p->slug), 'lastmod' => $p->updated_at]),
+            'stores' => Store::published()->get(['slug', 'updated_at'])
+                ->map(fn ($s) => ['loc' => url('/store/'.$s->slug), 'lastmod' => $s->updated_at]),
+            'store-categories' => Category::all(['slug', 'updated_at'])
+                ->map(fn ($c) => ['loc' => url('/category/'.$c->slug), 'lastmod' => $c->updated_at]),
+            'roundups' => ProductList::published()->get(['slug', 'updated_at'])
+                ->map(fn ($l) => ['loc' => url('/'.$l->slug), 'lastmod' => $l->updated_at]),
+            'blog' => Post::published()->get(['slug', 'updated_at'])
+                ->map(fn ($p) => ['loc' => url('/blog/'.$p->slug), 'lastmod' => $p->updated_at]),
+            'blog-categories' => BlogCategory::all(['slug', 'updated_at'])
+                ->map(fn ($c) => ['loc' => url('/blog/category/'.$c->slug), 'lastmod' => $c->updated_at]),
+            default => collect(),
+        };
+    }
+
+    /** The sitemap index at /sitemap.xml */
     public function sitemap()
     {
-        $urls = $this->urls();
+        $entries = [];
+        foreach ($this->sitemapTypes() as $type) {
+            $urls = $this->urlsForType($type);
+            $count = $urls->count();
+            if ($count === 0 && $type !== 'main') {
+                continue;
+            }
+            $lastmod = $urls->max('lastmod') ?: now();
+            $pages = max(1, (int) ceil($count / self::PER_SITEMAP));
+            for ($p = 1; $p <= $pages; $p++) {
+                $loc = $pages > 1
+                    ? url('/sitemap/'.$type.'-'.$p.'.xml')
+                    : url('/sitemap/'.$type.'.xml');
+                $entries[] = ['loc' => $loc, 'lastmod' => $lastmod];
+            }
+        }
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
+        $xml .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+        foreach ($entries as $e) {
+            $xml .= '  <sitemap><loc>'.e($e['loc']).'</loc>'
+                .'<lastmod>'.optional($e['lastmod'])->toAtomString().'</lastmod></sitemap>'."\n";
+        }
+        $xml .= '</sitemapindex>';
+
+        return Response::make($xml, 200, ['Content-Type' => 'application/xml']);
+    }
+
+    /** A child sitemap, e.g. /sitemap/stores.xml or /sitemap/stores-2.xml */
+    public function sitemapType(string $file)
+    {
+        if (preg_match('/^(.*)-(\d+)$/', $file, $m)) {
+            $type = $m[1];
+            $page = (int) $m[2];
+        } else {
+            $type = $file;
+            $page = 1;
+        }
+
+        if (! in_array($type, $this->sitemapTypes(), true)) {
+            abort(404);
+        }
+
+        $chunk = $this->urlsForType($type)->forPage($page, self::PER_SITEMAP);
+        if ($chunk->isEmpty()) {
+            abort(404);
+        }
+
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
-        foreach ($urls as $u) {
-            $xml .= '  <url><loc>'.e($u['loc']).'</loc>'
-                .'<lastmod>'.optional($u['lastmod'])->toAtomString().'</lastmod></url>'."\n";
+        foreach ($chunk as $u) {
+            $xml .= '  <url><loc>'.e($u['loc']).'</loc>';
+            if (! empty($u['lastmod'])) {
+                $xml .= '<lastmod>'.optional($u['lastmod'])->toAtomString().'</lastmod>';
+            }
+            $xml .= '</url>'."\n";
         }
         $xml .= '</urlset>';
 
         return Response::make($xml, 200, ['Content-Type' => 'application/xml']);
     }
 
+    /** Human-friendly browse page at /sitemap (product categories excluded — they are internal labels). */
     public function sitemapHtml()
     {
         $storeCats = Category::with(['stores' => fn ($q) => $q->published()])->get();
         $storeTree = $this->categoryTree(
             $storeCats,
             fn ($c) => route('category.show', $c->slug),
-            fn ($c) => $c->stores->map(fn ($s) => ['label' => $s->name, 'url' => route('store.show', $s->slug)])->values()->all()
+            fn ($c) => $c->stores->take(100)->map(fn ($s) => ['label' => $s->name, 'url' => route('store.show', $s->slug)])->values()->all()
         );
 
-        $roundupsByCat = ProductList::published()->get(['slug', 'title', 'h1', 'product_category_id'])->groupBy('product_category_id');
-        $productTree = $this->categoryTree(
-            ProductCategory::all(),
-            fn ($c) => null,
-            fn ($c) => collect($roundupsByCat->get($c->id, collect()))
-                ->map(fn ($r) => ['label' => ($r->h1 ?: $r->title), 'url' => url('/'.$r->slug)])->values()->all()
-        );
+        $roundups = ProductList::published()->latest('updated_at')->limit(300)->get(['slug', 'title', 'h1'])
+            ->map(fn ($r) => ['label' => ($r->h1 ?: $r->title), 'url' => url('/'.$r->slug)])->values()->all();
 
         $blogTree = BlogCategory::with(['posts' => fn ($q) => $q->published()])->get()->map(fn ($c) => [
             'name' => $c->name,
@@ -80,7 +139,7 @@ class SeoController extends Controller
         $pages = Page::published()->get(['slug', 'title'])
             ->map(fn ($p) => ['label' => $p->title, 'url' => url('/'.$p->slug)])->values()->all();
 
-        return view('seo.sitemap', compact('storeTree', 'productTree', 'blogTree', 'pages'));
+        return view('seo.sitemap', compact('storeTree', 'roundups', 'blogTree', 'pages'));
     }
 
     private function categoryTree($all, callable $urlFn, callable $pagesFn, $parentId = null): array

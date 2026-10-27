@@ -35,6 +35,7 @@ Route::post('/blog/{slug}/comment', [BlogController::class, 'comment'])
 // SEO endpoints
 Route::get('/sitemap.xml', [App\Http\Controllers\SeoController::class, 'sitemap'])->name('sitemap');
 Route::get('/sitemap/html', [App\Http\Controllers\SeoController::class, 'sitemapHtml'])->name('sitemap.html');
+Route::get('/sitemap/{file}.xml', [App\Http\Controllers\SeoController::class, 'sitemapType'])->where('file', '[a-z0-9-]+')->name('sitemap.type');
 Route::get('/sitemap', [App\Http\Controllers\SeoController::class, 'sitemapHtml'])->name('sitemap.page');
 Route::get('/robots.txt', [App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/rss.xml', [App\Http\Controllers\SeoController::class, 'rss'])->name('rss');
