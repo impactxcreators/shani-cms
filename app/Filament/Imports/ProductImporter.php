@@ -3,6 +3,7 @@
 namespace App\Filament\Imports;
 
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
@@ -29,6 +30,12 @@ class ProductImporter extends Importer
             ImportColumn::make('external_id')->rules(['max:255']),
             ImportColumn::make('affiliate_url')->rules(['max:1000']),
             ImportColumn::make('is_available')->boolean()->rules(['boolean']),
+            // Match a product category by NAME or slug (auto-creates it if missing).
+            ImportColumn::make('product_category')
+                ->label('Product category (name or slug)')
+                ->fillRecordUsing(function (): void {
+                    // handled in beforeSave; do not set on the model directly
+                }),
             ImportColumn::make('product_category_id')->numeric()->rules(['integer']),
         ];
     }
@@ -51,6 +58,20 @@ class ProductImporter extends Importer
         }
         if ($this->record->is_available === null) {
             $this->record->is_available = true;
+        }
+
+        // Resolve/auto-create the product category from a name or slug.
+        $cat = $this->data['product_category'] ?? null;
+        if (filled($cat)) {
+            $found = ProductCategory::where('slug', $cat)
+                ->orWhere('name', $cat)
+                ->first();
+
+            if (! $found) {
+                $found = ProductCategory::create(['name' => $cat]);
+            }
+
+            $this->record->product_category_id = $found->id;
         }
     }
 
