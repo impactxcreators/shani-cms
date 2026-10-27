@@ -3,6 +3,7 @@ namespace App\Filament\Resources\Adverts\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use App\Filament\Support\Duplicate;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -17,7 +18,7 @@ class AdvertsTable
             IconColumn::make('is_active')->boolean()->label('Active'),
             TextColumn::make('impressions')->numeric()->sortable(),
             TextColumn::make('clicks')->numeric()->sortable(),
-        ])->recordActions([EditAction::make()])
+        ])->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

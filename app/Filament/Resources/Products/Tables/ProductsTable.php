@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Products\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use App\Filament\Support\Duplicate;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
@@ -27,7 +28,7 @@ class ProductsTable
             IconColumn::make('is_available')->boolean()->label('Stock'),
         ])->defaultSort('updated_at', 'desc')
           ->filters([TrashedFilter::make()])
-          ->recordActions([EditAction::make()])
+          ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([
               DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make(),
           ])]);

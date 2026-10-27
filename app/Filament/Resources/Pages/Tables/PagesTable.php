@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Pages\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use App\Filament\Support\Duplicate;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
@@ -42,6 +43,7 @@ class PagesTable
             ])
             ->recordActions([
                 EditAction::make(),
+                Duplicate::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

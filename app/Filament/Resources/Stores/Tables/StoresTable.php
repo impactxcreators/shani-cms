@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Stores\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
+use App\Filament\Support\Duplicate;
 use Filament\Actions\EditAction;
 use Filament\Actions\ForceDeleteBulkAction;
 use Filament\Actions\RestoreBulkAction;
@@ -32,7 +33,7 @@ class StoresTable
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
               TrashedFilter::make(),
           ])
-          ->recordActions([EditAction::make()])
+          ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([
               DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make(),
           ])]);
