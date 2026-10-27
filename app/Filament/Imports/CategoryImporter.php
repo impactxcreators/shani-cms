@@ -16,6 +16,12 @@ class CategoryImporter extends Importer
             ImportColumn::make('name')->requiredMapping()->rules(['required', 'max:255']),
             ImportColumn::make('slug')->rules(['max:255']),
             ImportColumn::make('description'),
+            // Reference the parent by its name OR slug (friendlier than a database id).
+            ImportColumn::make('parent')
+                ->label('Parent category (name or slug)')
+                ->fillRecordUsing(function (): void {
+                    // handled in beforeSave; do not set on the model directly
+                }),
             ImportColumn::make('parent_id')->numeric()->rules(['integer']),
             ImportColumn::make('icon')->rules(['max:255']),
             ImportColumn::make('sort_order')->numeric()->rules(['integer']),
@@ -30,6 +36,21 @@ class CategoryImporter extends Importer
         }
 
         return Category::firstOrNew(['name' => $this->data['name']]);
+    }
+
+    protected function beforeSave(): void
+    {
+        $parent = $this->data['parent'] ?? null;
+
+        if (filled($parent)) {
+            $found = Category::where('slug', $parent)
+                ->orWhere('name', $parent)
+                ->first();
+
+            if ($found && $found->id !== $this->record->id) {
+                $this->record->parent_id = $found->id;
+            }
+        }
     }
 
     public static function getCompletedNotificationBody(\Filament\Actions\Imports\Models\Import $import): string
