@@ -20,7 +20,7 @@ class SeoController extends Controller
     /** Child sitemap types, in index order. Only types with real public pages. */
     private function sitemapTypes(): array
     {
-        return ['main', 'pages', 'stores', 'store-categories', 'roundups', 'blog', 'blog-categories'];
+        return ['main', 'pages', 'stores', 'store-categories', 'product-categories', 'roundups', 'blog', 'blog-categories'];
     }
 
     private function urlsForType(string $type): Collection
@@ -41,6 +41,13 @@ class SeoController extends Controller
                 ->map(fn ($s) => ['loc' => url('/store/'.$s->slug), 'lastmod' => $s->updated_at]),
             'store-categories' => Category::all(['slug', 'updated_at'])
                 ->map(fn ($c) => ['loc' => url('/category/'.$c->slug), 'lastmod' => $c->updated_at]),
+            'product-categories' => \App\Models\ProductCategory::query()
+                ->where(function ($q) {
+                    $q->whereHas('products', fn ($p) => $p->where('is_available', true))
+                        ->orWhereHas('productLists', fn ($l) => $l->published());
+                })
+                ->get(['slug', 'updated_at'])
+                ->map(fn ($c) => ['loc' => url('/product-category/'.$c->slug), 'lastmod' => $c->updated_at]),
             'roundups' => ProductList::published()->get(['slug', 'updated_at'])
                 ->map(fn ($l) => ['loc' => url('/'.$l->slug), 'lastmod' => $l->updated_at]),
             'blog' => Post::published()->get(['slug', 'updated_at'])

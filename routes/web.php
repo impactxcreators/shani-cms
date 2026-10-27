@@ -21,6 +21,7 @@ Route::get('/best', [PageController::class, 'best'])->name('roundups.index');
 Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/{slug}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/product-category/{slug}', [App\Http\Controllers\ProductCategoryController::class, 'show'])->name('product-category.show');
 Route::get('/store/{slug}', [StoreController::class, 'show'])->name('store.show');
 
 // Blog
