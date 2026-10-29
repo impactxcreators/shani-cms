@@ -28,7 +28,7 @@ class StoresTable
                 'gray' => 'draft', 'success' => 'published', 'warning' => 'archived',
             ]),
             TextColumn::make('updated_at')->since()->label('Updated'),
-        ])->defaultSort('updated_at', 'desc')
+        ])->defaultSort(Duplicate::sort('updated_at', 'desc'))
           ->filters([
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
               TrashedFilter::make(),

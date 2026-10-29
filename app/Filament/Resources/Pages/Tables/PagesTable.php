@@ -32,7 +32,7 @@ class PagesTable
                 IconColumn::make('show_in_footer')->boolean()->label('Footer'),
                 TextColumn::make('updated_at')->since()->sortable()->label('Updated'),
             ])
-            ->defaultSort('updated_at', 'desc')
+            ->defaultSort(Duplicate::sort('updated_at', 'desc'))
             ->filters([
                 SelectFilter::make('status')->options([
                     'draft' => 'Draft',

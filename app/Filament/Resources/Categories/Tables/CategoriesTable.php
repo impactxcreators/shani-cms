@@ -21,7 +21,7 @@ class CategoriesTable
             TextColumn::make('stores_count')->counts('stores')->label('Stores'),
             IconColumn::make('is_featured')->boolean()->label('Featured'),
             TextColumn::make('sort_order')->sortable()->label('Order'),
-        ])->defaultSort('sort_order')->recordActions([EditAction::make(), Duplicate::make()])
+        ])->defaultSort(Duplicate::sort('sort_order'))->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

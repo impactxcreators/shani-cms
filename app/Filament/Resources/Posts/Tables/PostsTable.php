@@ -24,7 +24,7 @@ class PostsTable
             TextColumn::make('published_at')->date()->label('Published')->placeholder('—'),
             TextColumn::make('comments_count')->counts('comments')->label('Comments'),
             TextColumn::make('updated_at')->since()->label('Updated'),
-        ])->defaultSort('updated_at', 'desc')
+        ])->defaultSort(Duplicate::sort('updated_at', 'desc'))
           ->filters([
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
               TrashedFilter::make(),

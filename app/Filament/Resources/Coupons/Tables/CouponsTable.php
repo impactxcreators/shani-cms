@@ -28,7 +28,7 @@ class CouponsTable
                 ->color(fn ($record) => $record->expires_at && $record->expires_at->isPast() ? 'danger' : null),
             TextColumn::make('used_count')->label('Used')->numeric(),
             TextColumn::make('status')->badge()->colors(['gray'=>'draft','success'=>'published','warning'=>'archived']),
-        ])->defaultSort('sort_order')
+        ])->defaultSort(Duplicate::sort('sort_order'))
           ->filters([
               SelectFilter::make('store')->relationship('store', 'name')->searchable()->preload(),
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),

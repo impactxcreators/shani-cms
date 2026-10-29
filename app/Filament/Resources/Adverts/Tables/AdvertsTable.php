@@ -18,7 +18,7 @@ class AdvertsTable
             IconColumn::make('is_active')->boolean()->label('Active'),
             TextColumn::make('impressions')->numeric()->sortable(),
             TextColumn::make('clicks')->numeric()->sortable(),
-        ])->recordActions([EditAction::make(), Duplicate::make()])
+        ])->defaultSort(Duplicate::sort())->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

@@ -16,7 +16,7 @@ class AuthorsTable
         return $table->columns([
             TextColumn::make('name')->searchable()->sortable()->weight('bold'),
             TextColumn::make('posts_count')->counts('posts')->label('Posts'),
-        ])->recordActions([EditAction::make(), Duplicate::make()])
+        ])->defaultSort(Duplicate::sort())->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }
 }

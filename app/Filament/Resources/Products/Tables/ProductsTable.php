@@ -26,7 +26,7 @@ class ProductsTable
             TextColumn::make('price')->money('USD'),
             TextColumn::make('rating')->label('★')->placeholder('—'),
             IconColumn::make('is_available')->boolean()->label('Stock'),
-        ])->defaultSort('updated_at', 'desc')
+        ])->defaultSort(Duplicate::sort('updated_at', 'desc'))
           ->filters([TrashedFilter::make()])
           ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([

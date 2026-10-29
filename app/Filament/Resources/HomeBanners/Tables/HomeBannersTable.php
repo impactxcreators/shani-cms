@@ -19,7 +19,7 @@ class HomeBannersTable
             TextColumn::make('headline')->searchable()->weight('bold'),
             IconColumn::make('is_active')->boolean()->label('Active'),
             TextColumn::make('sort_order')->label('Order')->sortable(),
-        ])->defaultSort('sort_order')->reorderable('sort_order')
+        ])->defaultSort(Duplicate::sort('sort_order'))->reorderable('sort_order')
           ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([DeleteBulkAction::make()])]);
     }

@@ -22,7 +22,9 @@ class Phase6Test extends TestCase
         Page::create(['title' => 'About', 'slug' => 'about', 'status' => 'published']);
         $res = $this->get('/sitemap.xml')->assertStatus(200);
         $res->assertHeader('Content-Type', 'application/xml');
-        $res->assertSee(url('/about'), false);
+        // sitemap.xml is an index; pages live in their own child sitemap
+        $res->assertSee(url('/sitemap/pages.xml'), false);
+        $this->get('/sitemap/pages.xml')->assertStatus(200)->assertSee(url('/about'), false);
     }
 
     public function test_robots_disallows_during_maintenance(): void

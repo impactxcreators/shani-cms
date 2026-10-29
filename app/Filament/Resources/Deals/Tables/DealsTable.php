@@ -26,7 +26,7 @@ class DealsTable
             IconColumn::make('is_featured')->boolean()->label('Featured'),
             TextColumn::make('expires_at')->date()->label('Expires')->placeholder('—'),
             TextColumn::make('status')->badge()->colors(['gray'=>'draft','success'=>'published','warning'=>'archived']),
-        ])->defaultSort('sort_order')
+        ])->defaultSort(Duplicate::sort('sort_order'))
           ->filters([
               SelectFilter::make('store')->relationship('store', 'name')->searchable()->preload(),
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
