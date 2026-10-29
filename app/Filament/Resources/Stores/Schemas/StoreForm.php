@@ -23,7 +23,7 @@ class StoreForm
                     ->afterStateUpdated(fn ($state, $get, $set) => blank($get('slug')) ? $set('slug', Str::slug($state)) : null),
                 TextInput::make('slug')->unique(ignoreRecord: true)->helperText('Leave blank to auto-fill.'),
                 TextInput::make('website_url')->url()->label('Website URL'),
-                TextInput::make('affiliate_url')->url()->label('Affiliate link')
+                TextInput::make('affiliate_url')->refererPicker()->url()->label('Affiliate link')
                     ->helperText('Your tracked link to this store.'),
                 FileUpload::make('logo')->image()->disk('public')->directory('store-logos')->imageEditor()->maxSize(2048)->label('Logo')->helperText('Upload a logo image (PNG or JPG, up to 2 MB).')->columnSpanFull(),
                 RichEditor::make('description')->columnSpanFull(),

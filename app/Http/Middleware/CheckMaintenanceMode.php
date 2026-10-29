@@ -23,6 +23,7 @@ class CheckMaintenanceMode
             || str_starts_with($path, 'livewire')
             || str_starts_with($path, 'css') || str_starts_with($path, 'js')
             || str_starts_with($path, 'storage') || str_starts_with($path, 'build')
+            || str_starts_with($path, 'ref/')
             || in_array($path, ['robots.txt', 'sitemap.xml', 'rss.xml', 'sitemap/html'])) {
             return $next($request);
         }

@@ -46,6 +46,10 @@ Route::post('/push/subscribe', [App\Http\Controllers\PushController::class, 'sub
 Route::post('/push/unsubscribe', [App\Http\Controllers\PushController::class, 'unsubscribe'])->middleware('throttle:20,1')->name('push.unsubscribe');
 Route::get('/push/click/{message}', [App\Http\Controllers\PushController::class, 'click'])->where('message', '[0-9]+')->name('push.click');
 
+// Short referer links: /ref/{code}
+Route::get('/ref/{code}', [App\Http\Controllers\RefererController::class, 'go'])
+    ->where('code', '[A-Za-z0-9][A-Za-z0-9_\-\/.]*')->name('referer.go');
+
 // Catch-all: resolves a roundup list, then a page. Must stay last.
 Route::get('/{slug}', [PageController::class, 'resolve'])
     ->where('slug', '^(?!'.preg_quote(config('cms.filament_path', 'admin'), '/').'|livewire|storage|build|css|js).*$')

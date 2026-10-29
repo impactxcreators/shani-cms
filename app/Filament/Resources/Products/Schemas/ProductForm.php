@@ -35,7 +35,7 @@ class ProductForm
                 TextInput::make('currency')->default('USD')->maxLength(3),
                 TextInput::make('rating')->label('Rating (out of 10)')->numeric()->minValue(0)->maxValue(10)->step(0.1),
                 TextInput::make('review_count')->numeric(),
-                TextInput::make('affiliate_url')->url()->label('Affiliate link')->columnSpanFull(),
+                TextInput::make('affiliate_url')->refererPicker()->url()->label('Affiliate link')->columnSpanFull(),
                 TextInput::make('external_id')->label('ASIN / retailer id'),
                 Toggle::make('is_available')->default(true)->label('In stock'),
             ])->columns(2),

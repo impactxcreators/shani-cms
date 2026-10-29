@@ -26,7 +26,7 @@ class CouponForm
                 TextInput::make('discount_value')->numeric()
                     ->visible(fn ($get) => in_array($get('discount_type'), ['percent', 'fixed']))
                     ->label(fn ($get) => $get('discount_type') === 'percent' ? 'Percent (e.g. 20)' : 'Amount (e.g. 10)'),
-                TextInput::make('destination_url')->url()->label('Where it links to')->columnSpanFull(),
+                TextInput::make('destination_url')->refererPicker()->url()->label('Where it links to')->columnSpanFull(),
                 Textarea::make('description')->rows(2)->columnSpanFull(),
             ])->columns(2),
 

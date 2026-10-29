@@ -16,7 +16,7 @@ class HandpickForm
             TextInput::make('title')->required(),
             TextInput::make('blurb'),
             TextInput::make('image')->url()->label('Image URL'),
-            TextInput::make('destination_url')->url()->label('Link'),
+            TextInput::make('destination_url')->refererPicker()->url()->label('Link'),
             Select::make('category_id')->label('Store category')
                 ->options(fn () => Category::pluck('name', 'id'))->searchable()->nullable(),
             TextInput::make('sort_order')->numeric()->default(0),

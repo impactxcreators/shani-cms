@@ -164,7 +164,7 @@ class SeoController extends Controller
         $maintenance = Setting::get('maintenance_mode');
         $lines = $maintenance
             ? ["User-agent: *", "Disallow: /"]
-            : ["User-agent: *", "Allow: /", "Disallow: /".config('cms.filament_path', 'admin'), "Sitemap: ".url('/sitemap.xml')];
+            : ["User-agent: *", "Allow: /", "Disallow: /".config('cms.filament_path', 'admin'), "Disallow: /ref/", "Sitemap: ".url('/sitemap.xml')];
 
         return Response::make(implode("\n", $lines)."\n", 200, ['Content-Type' => 'text/plain']);
     }

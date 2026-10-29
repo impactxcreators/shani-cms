@@ -23,7 +23,7 @@ class DealForm
                 TextInput::make('original_price')->numeric()->prefix('$')->label('Original price'),
                 TextInput::make('sale_price')->numeric()->prefix('$')->label('Sale price'),
                 TextInput::make('currency')->default('USD')->maxLength(3),
-                TextInput::make('destination_url')->url()->label('Where it links to'),
+                TextInput::make('destination_url')->refererPicker()->url()->label('Where it links to'),
             ])->columns(2),
 
             Section::make('Validity & status')->schema([

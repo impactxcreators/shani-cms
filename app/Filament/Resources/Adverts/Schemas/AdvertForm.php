@@ -20,7 +20,7 @@ class AdvertForm
                 'in_content' => 'In content',
             ])->required(),
             TextInput::make('image')->url()->label('Image URL'),
-            TextInput::make('destination_url')->url()->label('Links to'),
+            TextInput::make('destination_url')->refererPicker()->url()->label('Links to'),
             Textarea::make('html')->rows(3)->label('Or custom HTML')->columnSpanFull(),
             DateTimePicker::make('starts_at'),
             DateTimePicker::make('ends_at'),
