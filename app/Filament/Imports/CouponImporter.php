@@ -8,12 +8,14 @@ use Filament\Actions\Imports\Importer;
 
 class CouponImporter extends Importer
 {
+    use Concerns\SkipsInvalidFields;
+
     protected static ?string $model = Coupon::class;
 
     public static function getColumns(): array
     {
         return [
-            ImportColumn::make('store_id')->requiredMapping()->numeric()->rules(['required', 'integer']),
+            ImportColumn::make('store_id')->requiredMapping()->numeric()->rules(['required', 'integer', 'exists:stores,id']),
             ImportColumn::make('title')->requiredMapping()->rules(['required', 'max:255']),
             ImportColumn::make('code')->rules(['max:255']),
             ImportColumn::make('description'),

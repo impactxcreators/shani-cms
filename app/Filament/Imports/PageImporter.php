@@ -8,6 +8,8 @@ use Filament\Actions\Imports\Importer;
 
 class PageImporter extends Importer
 {
+    use Concerns\SkipsInvalidFields;
+
     protected static ?string $model = Page::class;
 
     public static function getColumns(): array

@@ -8,6 +8,8 @@ use Filament\Actions\Imports\Importer;
 
 class CategoryImporter extends Importer
 {
+    use Concerns\SkipsInvalidFields;
+
     protected static ?string $model = Category::class;
 
     public static function getColumns(): array
@@ -22,7 +24,7 @@ class CategoryImporter extends Importer
                 ->fillRecordUsing(function (): void {
                     // handled in beforeSave; do not set on the model directly
                 }),
-            ImportColumn::make('parent_id')->numeric()->rules(['integer']),
+            ImportColumn::make('parent_id')->numeric()->rules(['integer', 'exists:categories,id']),
             ImportColumn::make('icon')->rules(['max:255']),
             ImportColumn::make('sort_order')->numeric()->rules(['integer']),
             ImportColumn::make('is_featured')->boolean()->rules(['boolean']),

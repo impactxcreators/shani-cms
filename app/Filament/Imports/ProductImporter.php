@@ -11,6 +11,8 @@ use Illuminate\Support\Number;
 
 class ProductImporter extends Importer
 {
+    use Concerns\SkipsInvalidFields;
+
     protected static ?string $model = Product::class;
 
     public static function getColumns(): array
@@ -36,7 +38,7 @@ class ProductImporter extends Importer
                 ->fillRecordUsing(function (): void {
                     // handled in beforeSave; do not set on the model directly
                 }),
-            ImportColumn::make('product_category_id')->numeric()->rules(['integer']),
+            ImportColumn::make('product_category_id')->numeric()->rules(['integer', 'exists:product_categories,id']),
         ];
     }
 
