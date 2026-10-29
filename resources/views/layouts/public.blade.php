@@ -174,9 +174,8 @@
                 <a href="{{ url("/deals") }}">Deals</a> ·
                 <a href="{{ url("/best") }}">Best picks</a> ·
                 <a href="{{ url("/blog") }}">Blog</a> ·
-                <a href="{{ url("/sitemap") }}">Sitemap</a> ·
-                <a href="#" data-cookie-settings>Cookie settings</a>
-                <span data-push-manage hidden> · <a href="#">&#128276; Deal alerts</a></span>
+                <a href="{{ url("/sitemap") }}">Sitemap</a><span data-cookie-settings> · <a href="#">Cookie settings</a></span>
+                @if(\App\Support\VisitorPrompts::get("push_footer_link"))<span data-push-manage hidden> · <a href="#">&#128276; Deal alerts</a></span>@endif
             </p>
             <p class="copy">&copy; {{ date("Y") }} {{ \App\Models\Setting::get("site_name","Shani CMS") }}. {{ \App\Models\Setting::get("affiliate_disclosure") }}</p>
         </div>

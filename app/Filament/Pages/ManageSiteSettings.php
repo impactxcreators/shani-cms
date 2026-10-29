@@ -44,32 +44,13 @@ class ManageSiteSettings extends Page implements HasForms
         'affiliate_disclosure' => 'text',
         'maintenance_mode' => 'bool',
         'maintenance_message' => 'text',
-        'cookie_banner_enabled' => 'bool',
-        'cookie_banner_text' => 'text',
-        'consent_scripts' => 'text',
-        'push_enabled' => 'bool',
-        'push_prompt_title' => 'string',
-        'push_prompt_text' => 'text',
-        'push_prompt_delay' => 'string',
-        'push_prompt_min_pages' => 'string',
-    ];
-
-    /** used when a setting has never been saved */
-    protected array $defaults = [
-        'cookie_banner_enabled' => true,
-        'cookie_banner_text' => 'We use essential cookies to run this site. With your OK we also use cookies to understand visits and improve our deals.',
-        'push_enabled' => true,
-        'push_prompt_title' => 'Get deal alerts?',
-        'push_prompt_text' => 'Only the best coupons and price drops, a few times a week at most. Turn off anytime.',
-        'push_prompt_delay' => '20',
-        'push_prompt_min_pages' => '2',
     ];
 
     public function mount(): void
     {
         $values = [];
         foreach ($this->fields as $key => $type) {
-            $values[$key] = Setting::get($key, $this->defaults[$key] ?? null);
+            $values[$key] = Setting::get($key);
         }
         $this->form->fill($values);
     }
@@ -93,27 +74,6 @@ class ManageSiteSettings extends Page implements HasForms
                         Toggle::make('maintenance_mode')->label('Show "coming soon" to visitors'),
                         Textarea::make('maintenance_message')->rows(2),
                     ]),
-
-                Section::make('Cookie banner')
-                    ->description('A small bar at the bottom of the page. It never blocks the page and disappears for good once the visitor picks an option.')
-                    ->schema([
-                        Toggle::make('cookie_banner_enabled')->label('Show the cookie banner'),
-                        Textarea::make('cookie_banner_text')->label('Banner text')->rows(2)
-                            ->helperText('A "Privacy policy" link is added automatically.'),
-                        Textarea::make('consent_scripts')->label('Tracking code (runs only after "Accept")')->rows(4)
-                            ->helperText('Paste Google Analytics, Facebook Pixel, etc. here instead of anywhere else, so it only runs for visitors who agreed.'),
-                    ]),
-
-                Section::make('Deal alerts (push notifications)')
-                    ->description('Visitors first see a small card asking if they want alerts. The browser\'s own "Allow notifications" popup only appears if they press "Yes". "Not now" hides the card for 14 days.')
-                    ->schema([
-                        Toggle::make('push_enabled')->label('Offer deal alerts to visitors'),
-                        TextInput::make('push_prompt_title')->label('Card title')->maxLength(60),
-                        Textarea::make('push_prompt_text')->label('Card text')->rows(2)->maxLength(200),
-                        TextInput::make('push_prompt_delay')->label('Wait before asking (seconds)')->numeric()->minValue(0)->maxValue(600),
-                        TextInput::make('push_prompt_min_pages')->label('Ask only after this many pages viewed')->numeric()->minValue(1)->maxValue(20),
-                    ])
-                    ->columns(2),
 
                 Section::make('Legal')
                     ->schema([

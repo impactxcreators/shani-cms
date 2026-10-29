@@ -16,6 +16,13 @@ class ListPushMessages extends ListRecords
         return PushSubscription::count().' visitor(s) have turned on deal alerts. Create a campaign, pick what to promote, test it, then send.';
     }
 
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Resources\PushMessages\Widgets\PushStats::class,
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [

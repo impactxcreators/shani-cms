@@ -29,6 +29,16 @@ class PushMessageResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'title';
 
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) \App\Models\PushSubscription::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'Subscribers';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return PushMessageForm::configure($schema);

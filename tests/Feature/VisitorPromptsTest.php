@@ -93,7 +93,7 @@ class VisitorPromptsTest extends TestCase
         $p = config('cms.filament_path', 'admin');
         $this->get("/{$p}/push-messages")->assertStatus(200)->assertSee('turned on deal alerts');
         $this->get("/{$p}/push-messages/create")->assertStatus(200);
-        $this->get("/{$p}/manage-site-settings")->assertStatus(200)->assertSee('Deal alerts');
+        $this->get("/{$p}/manage-visitor-prompts")->assertStatus(200)->assertSee('Deal alerts card');
     }
 
     public function test_service_worker_file_exists(): void
