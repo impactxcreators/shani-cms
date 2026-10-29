@@ -54,4 +54,19 @@ class DuplicateOrderTest extends TestCase
         $order = Livewire::test(ListCoupons::class)->instance()->getTableRecords()->pluck('id')->all();
         $this->assertSame($copy->id, $order[array_search($coupons[1]->id, $order) + 1]);
     }
+
+    public function test_categories_with_counts_in_the_list_can_be_duplicated(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $cat = \App\Models\Category::create(['name' => 'Fashion', 'slug' => 'fashion']);
+        $pcat = \App\Models\ProductCategory::create(['name' => 'Shoes', 'slug' => 'shoes']);
+
+        Livewire::test(\App\Filament\Resources\Categories\Pages\ListCategories::class)
+            ->callTableAction('duplicate', $cat)->assertHasNoTableActionErrors();
+        Livewire::test(\App\Filament\Resources\ProductCategories\Pages\ListProductCategories::class)
+            ->callTableAction('duplicate', $pcat)->assertHasNoTableActionErrors();
+
+        $this->assertDatabaseHas('categories', ['name' => 'Fashion (copy)', 'copied_from_id' => $cat->id]);
+        $this->assertDatabaseHas('product_categories', ['name' => 'Shoes (copy)', 'copied_from_id' => $pcat->id]);
+    }
 }

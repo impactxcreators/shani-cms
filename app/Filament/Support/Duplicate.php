@@ -6,6 +6,7 @@ use Closure;
 use Filament\Actions\ReplicateAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 /**
  * A reusable "Duplicate" row action. Clones a record, marks the copy clearly,
@@ -23,6 +24,10 @@ class Duplicate
             ->excludeAttributes(['slug', 'external_id', 'created_at', 'updated_at', 'deleted_at', 'copied_from_id',
                 'sent_at', 'scheduled_at', 'sent_count', 'failed_count', 'click_count'])
             ->beforeReplicaSaved(function (Model $replica, Model $record): void {
+                // drop list-only extras such as stores_count (from withCount) that are not real columns
+                $columns = array_flip(Schema::getColumnListing($replica->getTable()));
+                $replica->setRawAttributes(array_intersect_key($replica->getAttributes(), $columns));
+
                 $attrs = $replica->getAttributes();
 
                 // mark the copy in its name, or its title when there is no name
