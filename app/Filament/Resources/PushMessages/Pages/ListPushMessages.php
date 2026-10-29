@@ -13,7 +13,7 @@ class ListPushMessages extends ListRecords
 
     public function getSubheading(): ?string
     {
-        return PushSubscription::count().' visitor(s) have turned on deal alerts. Write a notification, then press "Send now".';
+        return PushSubscription::count().' visitor(s) have turned on deal alerts. Create a campaign, pick what to promote, test it, then send.';
     }
 
     protected function getHeaderActions(): array

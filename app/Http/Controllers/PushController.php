@@ -25,7 +25,7 @@ class PushController extends Controller
                 'auth_token' => $data['keys']['auth'],
                 'content_encoding' => $data['contentEncoding'] ?? 'aes128gcm',
                 'user_agent' => substr((string) $request->userAgent(), 0, 500),
-            ]
+            ] + ($request->user() ? ['user_id' => $request->user()->id] : [])
         );
 
         return response()->json(['ok' => true]);

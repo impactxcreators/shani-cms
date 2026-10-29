@@ -9,9 +9,11 @@ class CreatePushMessage extends CreateRecord
 {
     protected static string $resource = PushMessageResource::class;
 
-    // back to the list, where the "Send now" button is
-    protected function getRedirectUrl(): string
+    protected static ?string $title = 'New push campaign';
+
+    // opens the edit screen, which has "Send test to me" and "Send now"
+    protected function getCreatedNotificationTitle(): ?string
     {
-        return static::getResource()::getUrl('index');
+        return 'Campaign saved — send a test, then send it';
     }
 }

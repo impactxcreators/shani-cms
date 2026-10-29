@@ -10,5 +10,6 @@ class PushMessage extends Model
 
     protected $casts = [
         'sent_at' => 'datetime',
+        'scheduled_at' => 'datetime',
     ];
 }

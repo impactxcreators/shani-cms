@@ -20,15 +20,17 @@ class Duplicate
             ->icon('heroicon-o-document-duplicate')
             ->color('gray')
             // drop unique/identity fields so the copy gets fresh ones
-            ->excludeAttributes(['slug', 'external_id', 'created_at', 'updated_at', 'deleted_at', 'copied_from_id'])
+            ->excludeAttributes(['slug', 'external_id', 'created_at', 'updated_at', 'deleted_at', 'copied_from_id',
+                'sent_at', 'scheduled_at', 'sent_count', 'failed_count', 'click_count'])
             ->beforeReplicaSaved(function (Model $replica, Model $record): void {
                 $attrs = $replica->getAttributes();
 
-                // mark the copy in its title/name
-                foreach (['title', 'name'] as $field) {
-                    if (array_key_exists($field, $attrs) && filled($replica->{$field})) {
-                        $replica->{$field} = $replica->{$field} . ' (copy)';
-                    }
+                // mark the copy in its name, or its title when there is no name
+                // (push campaigns have both: their title is what visitors see, so it stays clean)
+                if (array_key_exists('name', $attrs)) {
+                    $replica->name = ($replica->name ?: ($attrs['title'] ?? 'Untitled')) . ' (copy)';
+                } elseif (array_key_exists('title', $attrs) && filled($replica->title)) {
+                    $replica->title = $replica->title . ' (copy)';
                 }
 
                 // keep the duplicate out of public view until it is edited

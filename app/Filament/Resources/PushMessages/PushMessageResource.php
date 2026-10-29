@@ -23,9 +23,9 @@ class PushMessageResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Tools';
 
-    protected static ?string $navigationLabel = 'Push Notifications';
+    protected static ?string $navigationLabel = 'Push Campaigns';
 
-    protected static ?string $modelLabel = 'push notification';
+    protected static ?string $modelLabel = 'push campaign';
 
     protected static ?string $recordTitleAttribute = 'title';
 
