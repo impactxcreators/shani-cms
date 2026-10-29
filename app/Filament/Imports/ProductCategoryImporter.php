@@ -22,7 +22,7 @@ class ProductCategoryImporter extends Importer
                 ->fillRecordUsing(function (): void {
                     // handled in beforeSave; do not set on the model directly
                 }),
-            ImportColumn::make('parent_id')->numeric()->rules(['integer']),
+            ImportColumn::make('parent_id')->numeric()->rules(['nullable', 'integer']),
             ImportColumn::make('icon')->rules(['max:255']),
             ImportColumn::make('sort_order')->numeric()->rules(['integer']),
             ImportColumn::make('is_featured')->boolean()->rules(['boolean']),
@@ -40,6 +40,12 @@ class ProductCategoryImporter extends Importer
 
     protected function beforeSave(): void
     {
+        // "0", blank or an unknown id means "no parent" (it used to fail the whole row)
+        $pid = $this->record->parent_id;
+        if (! $pid || $pid == $this->record->id || ! ProductCategory::whereKey($pid)->exists()) {
+            $this->record->parent_id = null;
+        }
+
         $parent = $this->data['parent'] ?? null;
 
         if (filled($parent)) {

@@ -33,7 +33,7 @@ class ProductForm
             Section::make('Pricing & rating')->schema([
                 TextInput::make('price')->numeric()->prefix('$'),
                 TextInput::make('currency')->default('USD')->maxLength(3),
-                TextInput::make('rating')->numeric()->minValue(0)->maxValue(5)->step(0.1),
+                TextInput::make('rating')->label('Rating (out of 10)')->numeric()->minValue(0)->maxValue(10)->step(0.1),
                 TextInput::make('review_count')->numeric(),
                 TextInput::make('affiliate_url')->url()->label('Affiliate link')->columnSpanFull(),
                 TextInput::make('external_id')->label('ASIN / retailer id'),

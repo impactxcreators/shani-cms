@@ -23,7 +23,7 @@ class ProductImporter extends Importer
             ImportColumn::make('description'),
             ImportColumn::make('highlights')
                 ->castStateUsing(fn ($state) => filled($state) ? array_map('trim', explode('|', (string) $state)) : null),
-            ImportColumn::make('rating')->numeric()->rules(['numeric', 'between:0,5']),
+            ImportColumn::make('rating')->numeric()->rules(['nullable', 'numeric', 'between:0,10']),
             ImportColumn::make('review_count')->numeric()->rules(['integer']),
             ImportColumn::make('price')->numeric()->rules(['numeric']),
             ImportColumn::make('currency')->rules(['max:3']),
