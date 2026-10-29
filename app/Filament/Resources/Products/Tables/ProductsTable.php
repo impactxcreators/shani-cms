@@ -27,9 +27,10 @@ class ProductsTable
             TextColumn::make('rating')->label('★')->placeholder('—'),
             IconColumn::make('is_available')->boolean()->label('Stock'),
         ])->defaultSort(Duplicate::sort('updated_at', 'desc'))
-          ->filters([TrashedFilter::make()])
+          ->filters([\App\Support\Describer\DescribeAction::copiesFilter(), TrashedFilter::make()])
           ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([
+                \App\Support\Describer\DescribeAction::bulk(),
               DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make(),
           ])]);
     }

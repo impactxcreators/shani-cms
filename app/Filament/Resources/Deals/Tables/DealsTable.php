@@ -27,13 +27,14 @@ class DealsTable
             TextColumn::make('expires_at')->date()->label('Expires')->placeholder('—'),
             TextColumn::make('status')->badge()->colors(['gray'=>'draft','success'=>'published','warning'=>'archived']),
         ])->defaultSort(Duplicate::sort('sort_order'))
-          ->filters([
+          ->filters([\App\Support\Describer\DescribeAction::copiesFilter(), 
               SelectFilter::make('store')->relationship('store', 'name')->searchable()->preload(),
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
               TrashedFilter::make(),
           ])
           ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([
+                \App\Support\Describer\DescribeAction::bulk(),
               DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make(),
           ])]);
     }

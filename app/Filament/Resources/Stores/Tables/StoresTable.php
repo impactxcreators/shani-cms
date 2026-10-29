@@ -29,12 +29,13 @@ class StoresTable
             ]),
             TextColumn::make('updated_at')->since()->label('Updated'),
         ])->defaultSort(Duplicate::sort('updated_at', 'desc'))
-          ->filters([
+          ->filters([\App\Support\Describer\DescribeAction::copiesFilter(), 
               SelectFilter::make('status')->options(['draft'=>'Draft','published'=>'Published','archived'=>'Archived']),
               TrashedFilter::make(),
           ])
           ->recordActions([EditAction::make(), Duplicate::make()])
           ->toolbarActions([BulkActionGroup::make([
+                \App\Support\Describer\DescribeAction::bulk(),
               DeleteBulkAction::make(), ForceDeleteBulkAction::make(), RestoreBulkAction::make(),
           ])]);
     }

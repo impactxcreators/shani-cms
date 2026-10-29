@@ -27,7 +27,7 @@ class ProductForm
                     ->options(fn () => ProductCategory::pluck('name', 'id'))->searchable()->nullable(),
                 TextInput::make('image_url')->url()->label('Image URL')->columnSpanFull(),
                 TagsInput::make('highlights')->helperText('Key selling points. Press Enter after each.')->columnSpanFull(),
-                RichEditor::make('description')->columnSpanFull(),
+                RichEditor::make('description')->hintAction(\App\Support\Describer\DescribeAction::make())->columnSpanFull(),
             ])->columns(2),
 
             Section::make('Pricing & rating')->schema([

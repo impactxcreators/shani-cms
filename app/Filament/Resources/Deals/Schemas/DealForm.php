@@ -19,7 +19,7 @@ class DealForm
                 Select::make('store_id')->relationship('store', 'name')->searchable()->preload()->required()->label('Store'),
                 TextInput::make('title')->required(),
                 TextInput::make('image')->url()->label('Image URL')->columnSpanFull(),
-                Textarea::make('description')->rows(2)->columnSpanFull(),
+                Textarea::make('description')->rows(4)->hintAction(\App\Support\Describer\DescribeAction::make())->columnSpanFull(),
                 TextInput::make('original_price')->numeric()->prefix('$')->label('Original price'),
                 TextInput::make('sale_price')->numeric()->prefix('$')->label('Sale price'),
                 TextInput::make('currency')->default('USD')->maxLength(3),

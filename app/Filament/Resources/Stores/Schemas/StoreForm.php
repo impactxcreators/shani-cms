@@ -26,7 +26,7 @@ class StoreForm
                 TextInput::make('affiliate_url')->refererPicker()->url()->label('Affiliate link')
                     ->helperText('Your tracked link to this store.'),
                 FileUpload::make('logo')->image()->disk('public')->directory('store-logos')->imageEditor()->maxSize(2048)->label('Logo')->helperText('Upload a logo image (PNG or JPG, up to 2 MB).')->columnSpanFull(),
-                RichEditor::make('description')->columnSpanFull(),
+                RichEditor::make('description')->hintAction(\App\Support\Describer\DescribeAction::make())->columnSpanFull(),
                 Select::make('categories')->relationship('categories', 'name')
                     ->multiple()->preload()->searchable()
                     ->createOptionForm([
