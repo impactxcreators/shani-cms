@@ -41,6 +41,11 @@ Route::get('/sitemap', [App\Http\Controllers\SeoController::class, 'sitemapHtml'
 Route::get('/robots.txt', [App\Http\Controllers\SeoController::class, 'robots'])->name('robots');
 Route::get('/rss.xml', [App\Http\Controllers\SeoController::class, 'rss'])->name('rss');
 
+// Push notifications (deal alerts)
+Route::post('/push/subscribe', [App\Http\Controllers\PushController::class, 'subscribe'])->middleware('throttle:20,1')->name('push.subscribe');
+Route::post('/push/unsubscribe', [App\Http\Controllers\PushController::class, 'unsubscribe'])->middleware('throttle:20,1')->name('push.unsubscribe');
+Route::get('/push/click/{message}', [App\Http\Controllers\PushController::class, 'click'])->where('message', '[0-9]+')->name('push.click');
+
 // Catch-all: resolves a roundup list, then a page. Must stay last.
 Route::get('/{slug}', [PageController::class, 'resolve'])
     ->where('slug', '^(?!'.preg_quote(config('cms.filament_path', 'admin'), '/').'|livewire|storage|build|css|js).*$')

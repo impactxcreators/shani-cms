@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // anonymous deal-alert sign-ups; no account or session data involved
+        $middleware->validateCsrfTokens(except: ['push/subscribe', 'push/unsubscribe']);
+
         $middleware->web(prepend: [
             HandleRedirects::class,
             CheckMaintenanceMode::class,
