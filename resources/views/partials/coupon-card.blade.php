@@ -34,8 +34,8 @@
     @if($coupon->code)
         <div class="codebox" x-data="{shown:false}">
             <a class="btn" href="{{ url('/go/coupon/' . $coupon->id) }}" target="_blank" rel="sponsored nofollow noopener"
-               onclick="this.closest('.codebox').querySelector('.code').style.display='inline-block';this.style.display='none'">Show code</a>
-            <span class="code" style="display:none">{{ $coupon->code }}</span>
+               data-reveal data-code="{{ $coupon->code }}" data-store="{{ $coupon->store?->name }}" data-title="{{ $coupon->title }}" data-logo="{{ $coupon->store?->logo_url }}">Show code</a>
+            <span class="code" hidden>{{ $coupon->code }}</span>
         </div>
     @else
         <div style="margin-top:12px">

@@ -38,14 +38,6 @@
 @once
 <script>
 document.addEventListener('click', async function (e) {
-    var reveal = e.target.closest('[data-reveal]');
-    if (reveal) {
-        var code = reveal.nextElementSibling;
-        code.hidden = false;
-        reveal.hidden = true;
-        try { navigator.clipboard.writeText(code.textContent.trim()); } catch (_) {}
-        return;
-    }
     var more = e.target.closest('[data-loadmore]');
     if (!more) return;
     e.preventDefault();

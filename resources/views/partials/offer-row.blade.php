@@ -56,7 +56,7 @@
     </div>
     <div class="offer-cta">
         @if($hasCode)
-            <a class="btn" href="{{ $go }}" target="_blank" rel="sponsored nofollow noopener" data-reveal>Show code</a>
+            <a class="btn" href="{{ $go }}" target="_blank" rel="sponsored nofollow noopener" data-reveal data-code="{{ $offer->code }}" data-store="{{ $store?->name }}" data-title="{{ $offer->title }}" data-logo="{{ $store?->logo_url }}">Show code</a>
             <span class="code" hidden>{{ $offer->code }}</span>
         @else
             <a class="btn" href="{{ $go }}" target="_blank" rel="sponsored nofollow noopener">Show deal</a>

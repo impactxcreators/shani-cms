@@ -17,6 +17,14 @@ class Category extends Model
 
     protected $casts = ['is_featured' => 'boolean'];
 
+    protected static function booted(): void
+    {
+        // The header's Categories menu is cached; refresh it whenever categories change.
+        $forget = fn () => \Illuminate\Support\Facades\Cache::forget('nav_categories');
+        static::saved($forget);
+        static::deleted($forget);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()->generateSlugsFrom('name')->saveSlugsTo('slug')

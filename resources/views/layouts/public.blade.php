@@ -37,6 +37,39 @@
         .mainnav a{color:var(--muted);font-weight:600;font-size:.94rem;padding:8px 12px;border-radius:9px;transition:.15s}
         .mainnav a:hover{color:var(--fg);background:var(--card)}
         .mainnav a.active{color:var(--brand)}
+        /* Categories mega menu */
+        .navdrop>summary{list-style:none;cursor:pointer;color:var(--muted);font-weight:600;font-size:.94rem;padding:8px 12px;border-radius:9px;transition:.15s;white-space:nowrap;user-select:none}
+        .navdrop>summary::-webkit-details-marker{display:none}
+        .navdrop>summary:hover,.navdrop[open]>summary{color:var(--fg);background:var(--card)}
+        .navdrop>summary.active{color:var(--brand)}
+        .navdrop .caret{font-size:.7em;margin-left:3px;display:inline-block;transition:transform .15s}
+        .navdrop[open] .caret{transform:rotate(180deg)}
+        .navpanel{position:fixed;left:0;right:0;top:100%;background:var(--bg2);border-bottom:1px solid var(--line);box-shadow:0 24px 40px -20px rgba(0,0,0,.45);max-height:calc(100vh - 140px);overflow-y:auto;padding:18px 0 8px}
+        .navcats{display:grid;gap:18px 22px;grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+        .navcat-name{display:flex;align-items:center;gap:9px;font-weight:700;color:var(--fg)!important;padding:0!important;background:none!important}
+        .navcat-name:hover{color:var(--brand)!important}
+        .navcat .logoavatar{width:30px;height:30px;border-radius:8px;font-size:.85rem}
+        .navcat ul{list-style:none;margin:8px 0 4px 39px;padding:0}
+        .navcat li a{display:block;color:var(--muted)!important;font-size:.88rem;font-weight:500;padding:3px 0!important;background:none!important}
+        .navcat li a:hover{color:var(--brand)!important}
+        .navcat-all{display:inline-block;margin-left:39px;font-size:.82rem;font-weight:700;color:var(--brand)!important;padding:0!important;background:none!important}
+        .navpanel-foot{margin:16px 0 8px;padding-top:12px;border-top:1px solid var(--line);font-weight:700}
+        .navpanel-foot a{color:var(--brand)!important;padding:0!important;background:none!important}
+        /* Coupon code pop-up */
+        .codemodal{border:1px solid var(--line);border-radius:18px;background:var(--card);color:var(--fg);padding:30px 26px 24px;width:min(440px,calc(100vw - 32px));text-align:center;box-shadow:0 30px 70px -20px rgba(0,0,0,.6)}
+        .codemodal::backdrop{background:rgba(5,7,12,.62);backdrop-filter:blur(3px)}
+        .cm-x{position:absolute;top:10px;right:12px;background:none;border:none;color:var(--muted);font-size:1.6rem;line-height:1;cursor:pointer;padding:4px 8px;border-radius:8px}
+        .cm-x:hover{color:var(--fg);background:var(--card2)}
+        .cm-logo img,.cm-logo .logoavatar{width:68px;height:68px;border-radius:16px;object-fit:contain;background:#fff;padding:8px;box-shadow:var(--shadow);margin:0 auto;font-size:1.6rem}
+        .cm-logo .logoavatar{background:rgba(245,158,11,.12);padding:0}
+        .cm-store{margin:12px 0 0;font-weight:700;color:var(--brand);font-size:.9rem}
+        .cm-title{margin:.2rem 0 1rem;font-size:1.12rem;line-height:1.35}
+        .cm-codebox{display:flex;align-items:stretch;border:2px dashed var(--brand);border-radius:12px;background:rgba(245,158,11,.08);overflow:hidden}
+        .cm-code{flex:1;display:flex;align-items:center;justify-content:center;font-family:ui-monospace,Menlo,monospace;font-size:1.3rem;font-weight:800;letter-spacing:.12em;padding:12px;word-break:break-all;user-select:all}
+        .cm-copy{border-radius:0;min-width:96px;box-shadow:none}
+        .cm-copy.done{background:#10b981;color:#fff}
+        .cm-hint{color:var(--muted);font-size:.86rem;margin:12px 0 16px}
+        .cm-go{width:100%}
         .searchform{display:flex;gap:8px;margin-left:auto;max-width:300px;width:100%}
         .searchform input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);color:var(--fg);border-radius:11px;padding:10px 14px;font-size:.95rem;transition:.15s}
         .searchform input::placeholder{color:var(--muted)}
@@ -200,7 +233,8 @@
             .searchform{order:2;max-width:none;flex:1 1 140px}
             .mainnav{order:3;width:100%;overflow-x:auto;flex-wrap:nowrap;gap:2px;padding-bottom:2px;scrollbar-width:none}
             .mainnav::-webkit-scrollbar{display:none}
-            .mainnav a{white-space:nowrap}
+            .mainnav a,.navdrop>summary{white-space:nowrap}
+            .navcats{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px}
             h1{font-size:1.85rem}
         }
     </style>
@@ -234,7 +268,7 @@
             <a href="{{ url("/") }}" class="logo">{!! str_replace(" ", " <span>", e(\App\Models\Setting::get("site_name","Shani CMS"))) !!}@if(str_contains(\App\Models\Setting::get("site_name","Shani CMS")," "))</span>@endif</a>
             <nav class="mainnav">
                 <a href="{{ url("/store") }}" class="{{ request()->is("store","store/*") ? "active" : "" }}">Stores</a>
-                <a href="{{ url("/categories") }}" class="{{ request()->is("categories","category/*") ? "active" : "" }}">Categories</a>
+                @include("partials.nav-categories")
                 <a href="{{ url("/coupons") }}" class="{{ request()->is("coupons") ? "active" : "" }}">Coupons</a>
                 <a href="{{ url("/deals") }}" class="{{ request()->is("deals") ? "active" : "" }}">Deals</a>
                 <a href="{{ url("/best") }}" class="{{ request()->is("best") ? "active" : "" }}">Best</a>
@@ -259,6 +293,7 @@
             <p class="copy">&copy; {{ date("Y") }} {{ \App\Models\Setting::get("site_name","Shani CMS") }}. {{ \App\Models\Setting::get("affiliate_disclosure") }}</p>
         </div>
     </footer>
+    @include("partials.code-modal")
     @include("partials.visitor-prompts")
 </body>
 </html>
