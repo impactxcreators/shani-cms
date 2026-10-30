@@ -4,11 +4,6 @@
         @include("partials.blocks.hero", ["banners" => $banners])
     @endif
 
-    <div class="homesearch">
-        @include("partials.search-form", ["variant" => "big", "placeholder" => "Search coupons, deals & reviews…"])
-        <p class="hint">Find the best discount codes, deals and product picks</p>
-    </div>
-
     @forelse($blocks as $block)
         @includeIf("partials.blocks.".$block->type, ["block" => $block])
     @empty

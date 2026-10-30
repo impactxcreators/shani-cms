@@ -1,4 +1,4 @@
-{{-- Expects: $offers (paginator), $stats, $sort, $type; optional $showTypes, $intro, $empty --}}
+{{-- Expects: $offers (paginator), $stats, $sort, $type; optional $showTypes, $sorts, $intro, $empty --}}
 @if(! empty($intro))<p class="offerintro">{{ $intro }}</p>@endif
 
 <div class="offerbar">
@@ -14,7 +14,7 @@
         @if(($showTypes ?? false) && $type !== 'all')<input type="hidden" name="type" value="{{ $type }}">@endif
         <label>Sort
             <select name="sort" onchange="this.form.submit()">
-                @foreach(\App\Support\OfferFeed::SORTS as $key => $label)
+                @foreach($sorts ?? \App\Support\OfferFeed::SORTS as $key => $label)
                     <option value="{{ $key }}" @selected($sort === $key)>{{ $label }}</option>
                 @endforeach
             </select>

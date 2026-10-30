@@ -36,6 +36,39 @@ class HomeOfferFeedTest extends TestCase
         $this->get('/?page=2')->assertOk()->assertSee('Coupon 2')->assertSee('Coupon 1')
             ->assertDontSee('data-loadmore>Load more', false);
 
-        $this->get('/?type=deals')->assertOk()->assertSee('Newest deal')->assertDontSee('Coupon 4');
+        // Home uses the Hot / Newest sort only, without type filters.
+        $this->get('/?sort=new')->assertOk()->assertSee('<option value="new" selected', false)
+            ->assertDontSee('Biggest discount')->assertDontSee('class="chip');
+    }
+
+    public function test_home_sections_in_curateddeals_order(): void
+    {
+        Setting::set('maintenance_mode', '0', 'bool');
+        Setting::set('site_name', 'Gipsy Pockets');
+        $fashion = \App\Models\Category::create(['name' => 'Fashion', 'is_featured' => true]);
+        \App\Models\Category::create(['name' => 'Shoes', 'parent_id' => $fashion->id]);
+        $store = Store::create(['name' => 'Nike', 'slug' => 'nike', 'status' => 'published', 'is_active' => true]);
+        $store->categories()->attach($fashion);
+        Coupon::create(['store_id' => $store->id, 'title' => 'Nike code', 'code' => 'N10', 'status' => 'published', 'is_verified' => true]);
+
+        $blocks = [
+            ['intro', 'Save more today', []],
+            ['offer_feed', null, ['limit' => 20]],
+            ['category_boxes', null, []],
+            ['stores_by_category', null, []],
+            ['why_us', null, ['points' => [['icon' => '*', 'title' => 'Fast savings', 'text' => 'Quick.']]]],
+            ['faq', null, []],
+        ];
+        foreach ($blocks as $i => [$type, $title, $config]) {
+            HomeBlock::create(['type' => $type, 'title' => $title, 'config' => $config, 'is_active' => true, 'sort_order' => $i]);
+        }
+
+        $res = $this->get('/')->assertOk();
+        $res->assertSeeInOrder(['<h1>Save more today</h1>', 'Nike code', 'Shop by category', 'Featured stores by category', 'Fast savings', 'Frequently asked questions'], false);
+        $res->assertSee('Gipsy Pockets has 1 active coupon from 1 store across 2 categories. 1 coupon is verified by our team.');
+        $res->assertSee(route('category.show', 'shoes'), false);
+        $res->assertSee('1 coupon');
+        $res->assertSee('"@type":"FAQPage"', false)->assertSee('What is a coupon code?');
+        $res->assertDontSee('Every offer in one place');
     }
 }

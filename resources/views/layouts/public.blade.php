@@ -142,6 +142,41 @@
         .offer-cta .code{text-align:center}
         .pill.muted-pill{color:var(--muted);background:transparent;border-color:var(--line)}
         .loadmore{text-align:center;margin-top:22px}
+        /* Home sections */
+        .homeintro{text-align:center;margin:6px auto 8px;max-width:860px}
+        .homeintro h1{background:linear-gradient(135deg,var(--fg) 40%,var(--brand));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .homeintro-text{color:var(--muted);margin:.4rem 0 0}
+        .homeintro .offerintro{margin:14px auto 0;display:inline-block}
+        .grid.cols3{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+        .catboxes{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+        .catbox{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+        .catbox-head{display:flex;gap:12px;align-items:center;color:var(--fg)}
+        .catbox-head b{display:block;line-height:1.25}.catbox-head small{color:var(--muted);font-size:.82rem}
+        .catbox-head:hover b{color:var(--brand)}
+        .catbox-icon{width:42px;height:42px;border-radius:11px;font-size:1.1rem}
+        .catbox-subs{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+        .catbox-subs a{display:inline-block;font-size:.8rem;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+        .catbox-subs a:hover{color:var(--brand);border-color:var(--brand)}
+        .catbox-all{margin-top:auto;font-size:.86rem;font-weight:700}
+        .catbox-title{font-weight:800;color:var(--fg);font-size:1.02rem}.catbox-title:hover{color:var(--brand)}
+        .storelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+        .storelist a{display:flex;align-items:center;gap:10px;color:var(--fg);padding:6px;border-radius:9px}
+        .storelist a:hover{background:var(--card2);color:var(--brand)}
+        .storelist img,.storelist .logoavatar{width:32px;height:32px;border-radius:8px;object-fit:contain;background:#fff;padding:3px;flex:none}
+        .storelist .logoavatar{background:rgba(245,158,11,.12);padding:0;font-size:.9rem}
+        .storelist span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:.92rem}
+        .storelist small{color:var(--muted);font-size:.78rem;white-space:nowrap}
+        .postcard{display:flex;flex-direction:column;gap:6px;color:inherit}
+        .postcard img{width:100%;height:150px;object-fit:cover;border-radius:10px}
+        .postcard h3{color:var(--fg)}
+        .whygrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+        .whyitem{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+        .whyicon{display:inline-flex;width:40px;height:40px;align-items:center;justify-content:center;border-radius:11px;background:rgba(245,158,11,.12);font-size:1.15rem}
+        .whyitem h3{margin:.7rem 0 .25rem;font-size:1rem}
+        .whyitem p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.5}
+        .faqlist{max-width:860px}
+        .faq .smbody{padding-left:16px}.faq .smbody p{margin:10px 0 4px;color:var(--muted)}
+        .sectionmore{margin:14px 0 0;font-weight:700;font-size:.92rem}
         @media(max-width:640px){
             .offer{grid-template-columns:56px minmax(0,1fr);grid-template-areas:"logo body" "off body" "cta cta";gap:8px 14px;padding:14px;align-items:start}
             .offer-logo img,.offer-logo .logoavatar{width:56px;height:56px}
