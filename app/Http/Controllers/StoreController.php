@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coupon;
-use App\Models\Deal;
 use App\Models\Store;
+use App\Support\OfferFeed;
+use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
@@ -33,15 +33,23 @@ class StoreController extends Controller
         return view('stores.show', compact('store', 'coupons', 'deals'));
     }
 
-    public function coupons()
+    public function coupons(Request $request)
     {
-        $coupons = Coupon::active()->with('store')->orderByDesc('is_verified')->orderBy('sort_order')->paginate(24);
-        return view('coupons.index', compact('coupons'));
+        return $this->feed($request, 'coupons', 'coupons.index');
     }
 
-    public function deals()
+    public function deals(Request $request)
     {
-        $deals = Deal::active()->with('store')->orderByDesc('is_featured')->orderBy('sort_order')->paginate(24);
-        return view('deals.index', compact('deals'));
+        return $this->feed($request, 'deals', 'deals.index');
+    }
+
+    private function feed(Request $request, string $type, string $view)
+    {
+        $scope = fn () => Store::published()->select('stores.id');
+        $sort = OfferFeed::sort($request->query('sort'));
+        $offers = OfferFeed::page($scope(), $type, $sort);
+        $stats = OfferFeed::stats($scope(), $type);
+
+        return view($view, compact('offers', 'stats', 'type', 'sort'));
     }
 }

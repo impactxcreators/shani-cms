@@ -1,6 +1,6 @@
 <details class="smnode">
     <summary>
-        <span class="smname">{{ $node["name"] }}</span>
+        @if($node["url"])<a class="smname" href="{{ $node["url"] }}">{{ $node["name"] }}</a>@else<span class="smname">{{ $node["name"] }}</span>@endif
         @php($cnt = count($node["pages"]))
         @if($cnt)<span class="smcount">{{ $cnt }}</span>@endif
     </summary>

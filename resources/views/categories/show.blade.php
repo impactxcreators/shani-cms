@@ -1,33 +1,30 @@
 @extends('layouts.public')
-@section('title', $category->name.' stores, coupons & deals')
-@section('meta_description', $category->description ? \Illuminate\Support\Str::limit(strip_tags($category->description), 150) : 'Browse '.$category->name.' brands with the latest coupons and deals.')
+@php($intro = \App\Support\OfferFeed::intro($stats, $category->name))
+@section('title', $category->name.' coupons & deals')
+@section('meta_description', $category->description ? \Illuminate\Support\Str::limit(strip_tags($category->description), 150) : ($intro ? \Illuminate\Support\Str::limit($intro, 150) : 'The latest '.$category->name.' coupons and deals.'))
 @section('content')
-    <p class="muted-sm"><a href="{{ url('/categories') }}">Categories</a> / {{ $category->name }}</p>
-    <h1>{{ $category->name }}</h1>
+    <p class="muted-sm"><a href="{{ url('/categories') }}">Categories</a>@if($category->parent) / <a href="{{ route('category.show', $category->parent->slug) }}">{{ $category->parent->name }}</a>@endif / {{ $category->name }}</p>
+    <h1>{{ $category->name }} coupons &amp; deals</h1>
     @if($category->description)<div class="prose">{!! $category->description !!}</div>@endif
 
-    @if($stores->isEmpty())
-        <p class="muted-sm" style="margin-top:20px">No stores in this category yet. <a href="{{ url('/store') }}">See all stores</a>.</p>
-    @else
-        <div class="grid cols2" style="margin-top:22px">
-            @foreach($stores as $store)
-                <a class="card searchresult" href="{{ route('store.show', $store->slug) }}" style="text-decoration:none;color:inherit;display:flex;gap:14px;align-items:center">
-                    @if($store->logo_url)
-                        <img class="brandlogo-lg" src="{{ $store->logo_url }}" alt="{{ $store->name }} logo">
-                    @else
-                        <span class="brandlogo-lg logoavatar" style="font-size:1.3rem">{{ strtoupper(substr($store->name, 0, 1)) }}</span>
-                    @endif
-                    <span style="min-width:0;flex:1">
-                        <span style="display:block;font-weight:700;color:var(--fg)">{{ $store->name }}</span>
-                        <span class="badges" style="margin-top:4px">
-                            @if($store->is_featured)<span class="pill save">Featured</span>@endif
-                            @if($store->average_rating)<span class="rating">&starf; {{ rtrim(rtrim(number_format($store->average_rating, 1), '0'), '.') }}</span>@endif
-                        </span>
-                        <span class="muted-sm" style="display:block;margin-top:4px">{{ $store->active_coupons_count }} coupon{{ $store->active_coupons_count === 1 ? '' : 's' }} · {{ $store->active_deals_count }} deal{{ $store->active_deals_count === 1 ? '' : 's' }}</span>
-                    </span>
-                </a>
+    @if($children->isNotEmpty())
+        <div class="linkgrid">
+            @foreach($children as $child)
+                <a class="linkchip" href="{{ route('category.show', $child->slug) }}">{{ $child->name }}</a>
             @endforeach
         </div>
-        <div style="margin-top:26px">{{ $stores->links() }}</div>
     @endif
+
+    @if($stores->isNotEmpty())
+        <div class="storestrip" aria-label="Stores in {{ $category->name }}">
+            @foreach($stores as $store)
+                <a class="linkchip" href="{{ route('store.show', $store->slug) }}">
+                    @if($store->logo_url)<img src="{{ $store->logo_url }}" alt="" loading="lazy" width="20" height="20">@endif{{ $store->name }}
+                </a>
+            @endforeach
+            @if($stores->count() === 40)<a class="linkchip" href="{{ url('/store') }}">All stores &rarr;</a>@endif
+        </div>
+    @endif
+
+    @include('partials.offer-feed', ['showTypes' => true, 'empty' => 'No offers in '.$category->name.' yet. Check back soon.'])
 @endsection

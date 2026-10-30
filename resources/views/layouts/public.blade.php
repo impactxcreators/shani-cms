@@ -104,7 +104,51 @@
         .smview{margin:10px 0 2px;font-size:.9rem}
         .smlist{list-style:none;padding:0;margin:8px 0;columns:2;column-gap:28px}
         .smlist li{margin:5px 0;break-inside:avoid}
-        .smlist a{color:var(--fg)}.smlist a:hover{color:var(--brand)}
+        .smlist a{color:var(--brand)}.smlist a:hover{text-decoration:underline}
+        a.smname{color:var(--fg)}a.smname:hover{color:var(--brand);text-decoration:underline}
+        /* Offer rows (category, coupons and deals pages) */
+        .offerintro{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 16px;color:var(--muted);font-size:.92rem;max-width:820px;margin:14px 0 0}
+        .storestrip{display:flex;gap:8px;overflow-x:auto;padding:4px 0 6px;margin:14px 0 0;scrollbar-width:thin}
+        .storestrip .linkchip{display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+        .storestrip img{width:20px;height:20px;object-fit:contain;border-radius:5px;background:#fff}
+        .offerbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin:22px 0 14px}
+        .chips{display:flex;gap:6px;flex-wrap:wrap}
+        .chip{font-size:.88rem;font-weight:700;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px;transition:.15s}
+        .chip small{color:var(--muted);font-weight:600;margin-left:3px}
+        .chip:hover{border-color:var(--brand)}
+        .chip.on{background:linear-gradient(135deg,var(--brand),var(--brand2));color:var(--brand-ink);border-color:transparent}
+        .chip.on small{color:var(--brand-ink)}
+        .sortform{margin-left:auto}
+        .sortform label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.9rem;color:var(--muted)}
+        .sortform select{background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;font:inherit;font-weight:600;cursor:pointer}
+        .offerlist{display:flex;flex-direction:column;gap:12px}
+        .offer{display:grid;grid-template-columns:64px 88px minmax(0,1fr) auto;grid-template-areas:"logo off body cta";gap:16px;align-items:center;
+               background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow);transition:border-color .15s}
+        .offer:hover{border-color:var(--brand)}
+        .offer-logo{grid-area:logo}
+        .offer-logo img,.offer-logo .logoavatar{width:64px;height:64px;border-radius:12px;object-fit:contain;background:#fff;padding:6px;box-shadow:var(--shadow)}
+        .offer-logo .logoavatar{background:rgba(245,158,11,.12);font-size:1.5rem;padding:0}
+        .offer-off{grid-area:off;text-align:center;line-height:1.05;border-right:1px dashed var(--line);padding-right:12px}
+        .offer-off b{display:block;font-size:1.5rem;font-weight:800;letter-spacing:-.02em;word-break:break-word}
+        .offer-off span{display:block;margin-top:4px;font-size:.7rem;font-weight:700;color:var(--muted);letter-spacing:.08em}
+        .offer-body{grid-area:body;min-width:0}
+        .offer-store{font-size:.84rem;font-weight:700;color:var(--brand)}
+        .offer-store:hover{text-decoration:underline}
+        .offer-title{margin:.1rem 0 .3rem;font-size:1.04rem;font-weight:700;line-height:1.35;letter-spacing:-.01em}
+        .offer-price{margin:0 0 .3rem}.offer-price .price{font-size:1.05rem}
+        .offer-desc{margin:0 0 .45rem;color:var(--muted);font-size:.88rem;line-height:1.45}
+        .offer-cta{grid-area:cta;display:flex;flex-direction:column;align-items:stretch;gap:6px}
+        .offer-cta .btn{white-space:nowrap;min-width:132px}
+        .offer-cta .code{text-align:center}
+        .pill.muted-pill{color:var(--muted);background:transparent;border-color:var(--line)}
+        .loadmore{text-align:center;margin-top:22px}
+        @media(max-width:640px){
+            .offer{grid-template-columns:56px minmax(0,1fr);grid-template-areas:"logo body" "off body" "cta cta";gap:8px 14px;padding:14px;align-items:start}
+            .offer-logo img,.offer-logo .logoavatar{width:56px;height:56px}
+            .offer-off{border-right:none;padding-right:0}
+            .offer-off b{font-size:1.15rem}
+            .sortform{margin-left:0}
+        }
         @media(max-width:620px){.smlist{columns:1}}
         /* Badge colour variants */
         .pill.good{color:#10b981;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35)}

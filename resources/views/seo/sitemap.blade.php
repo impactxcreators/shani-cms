@@ -3,7 +3,7 @@
 @section('meta_description', 'Browse every page on the site by category.')
 @section('content')
     <h1>Sitemap</h1>
-    <p class="muted">Browse everything by category. Tap a category to see the pages inside it.</p>
+    <p class="muted">Browse everything by category. Tap a name to open its page, or the arrow to see what is inside.</p>
 
     <h2>Store categories</h2>
     @forelse($storeTree as $node)
