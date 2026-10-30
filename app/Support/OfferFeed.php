@@ -37,8 +37,9 @@ class OfferFeed
      * One page of offers from the given stores.
      *
      * @param  Builder  $stores  a Store query selecting only `stores.id`
+     * @param  int  $perPage  offers per page (and per "Load more" click), 1-100
      */
-    public static function page(Builder $stores, string $type = 'all', string $sort = 'hot'): LengthAwarePaginator
+    public static function page(Builder $stores, string $type = 'all', string $sort = 'hot', int $perPage = self::PER_PAGE): LengthAwarePaginator
     {
         $parts = [];
         if ($type !== 'deals') {
@@ -68,7 +69,7 @@ class OfferFeed
             'ending' => $query->orderByRaw('expires_at IS NULL')->orderBy('expires_at')->orderByDesc('created_at'),
             default => $query->orderByDesc('boost')->orderByDesc('popularity')->orderByDesc('created_at'),
         };
-        $page = $query->orderBy('kind')->orderByDesc('id')->paginate(self::PER_PAGE)->withQueryString();
+        $page = $query->orderBy('kind')->orderByDesc('id')->paginate(max(1, min($perPage, 100)))->withQueryString();
 
         // Swap the sorted rows for the real models, keeping the order.
         $rows = $page->getCollection();

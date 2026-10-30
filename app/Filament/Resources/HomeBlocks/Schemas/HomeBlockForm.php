@@ -16,6 +16,7 @@ class HomeBlockForm
             Select::make('type')->required()->live()->options([
                 'hero' => 'Hero banner carousel',
                 'featured_logos' => 'Featured store logos',
+                'offer_feed' => 'Coupons & deals list (with Load more)',
                 'coupon_grid' => 'Latest coupons grid',
                 'trending' => 'Trending / featured categories',
                 'handpicked' => 'Handpicked cards',
@@ -26,7 +27,8 @@ class HomeBlockForm
             Textarea::make('config.text')->label('Text')->rows(4)
                 ->visible(fn ($get) => $get('type') === 'rich_text')->columnSpanFull(),
             TextInput::make('config.limit')->numeric()->label('How many to show')
-                ->visible(fn ($get) => in_array($get('type'), ['coupon_grid', 'blog_feed', 'featured_logos', 'handpicked', 'trending']))
+                ->helperText(fn ($get) => $get('type') === 'offer_feed' ? 'Offers shown at first, and added by each "Load more" click.' : null)
+                ->visible(fn ($get) => in_array($get('type'), ['offer_feed', 'coupon_grid', 'blog_feed', 'featured_logos', 'handpicked', 'trending']))
                 ->default(8),
             KeyValue::make('config')->label('Advanced settings')
                 ->visible(fn ($get) => false),
